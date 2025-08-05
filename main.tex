@@ -33,7 +33,6 @@
 \newtheorem{Theorem}{Теорема}
 \renewcommand{\theTheorem}{\arabic{theorem}$^\prime$}
 
-% --- журнал‑специфичные метаданные (ДОЛЖНЫ стоять **до** \begin{document}) ---
 \begin{document}
 \Volume{505}
 \Year{2025}
@@ -54,12 +53,17 @@
 
 \presentedby{Представлено кем-то}
 
-% Даты публикации (пример)
 \dateA{16.08.2025}
 \dateB{20.08.2025}
 \dateC{31.08.2025}
 
-% -------------------------------------------------------
+\alttitle{Evaluating general and special knowledge in large language models for Russian language through replication of encyclopedia articles}
+
+\altauthor{D.\,A.~Grigoriev\Addressmark[a]\Emailmark[1], D.\,I.~Chernyshev\Addressmark[a]\Emailmark[2]}
+
+\altAddresstext[a]{Lomonosov Moscow State University, Moscow Center for Fundamental and Applied Mathematics, \\ Moscow, Russian Federation}
+
+\altpresentedby{man who sold the world}
 
 
 \maketitle
@@ -71,6 +75,15 @@
 \begin{keywords}
 LLM, реферирование, литература, книги, краткий пересказ
 \end{keywords}
+
+\begin{altabstract}
+This work explores methods for compressing literary texts using language models and proposes improved approaches for accurate summarization under limited context conditions.
+\end{altabstract}
+
+\begin{altkeywords}
+LLM, summarization, literature, books, brief retelling
+\end{altkeywords}
+
 
 % ================= ВВЕДЕНИЕ =================
 \section*{Введение}
@@ -135,13 +148,13 @@ LibRuSec & Башня Волверден & [Аллен Грант] \\
 \subsection*{Базовые и модифицированные стратегии}
 
 \subsubsection*{Иерархический метод.}
-Суть этого метода [ссылка!] заключается в том, что текст разбивается на фрагменты (чанки), для каждого из
+Суть этого метода \cite{hierarchical} заключается в том, что текст разбивается на фрагменты (чанки), для каждого из
 которых отдельно генерируется локальная аннотация. 
 Эти фрагменты затем объединяются в группы, и из полученных аннотаций снова формируется краткое содержание
 следующего уровня. Последний уровень представляет собой итоговую аннотацию всего произведения.
 
 \subsubsection*{«Чертёжный» метод (Text‑Blueprint).}
-Данный метод [ссылка!] ориентирован на построение промежуточного
+Данный метод \cite{blueprint} ориентирован на построение промежуточного
 плана аннотации перед генерацией текста. План формируется в виде набора вопросноответных пар, что повышает управляемость генерации и обеспечивает структурированность результата.
 Сначала модель формирует список вопросов, отражающих ключевые события, темы
 и персонажей текста. Далее к каждому вопросу автоматически подбирается краткий
@@ -268,9 +281,12 @@ yagpt5lite & 34.17 & 14.08 & 99.70 & 27.26 \\
 
 \section*{Результаты}
 
-В таблице \ref{tab:results_models} приведены сравнительные результаты работы описанных выше методов генерации кратких пересказов художественных текстов.
-Для каждой из исллдованных моделей измерялись метрики качеств  и время выполнеия в зависимости от метода: базовые чертежный и иерархический методы, а также их усовершенствованные версии \- 
-чертежный метод с кластеризацией вопросов и иерархический метод с фильтрацией узлов.
+В таблице \ref{tab:results_models} представлены сравнительные метрики качества автоматического пересказа книг разными моделями и методами обработки. Для каждой комбинации модели и метода измерялись BERTScore, ROUGEL, Answer Coverage и 
+Similarity, а также время генерации (среднее) на 100 примерах, одинаковых для всех замеров. Лучше всего себя показала модель Qwen3235B: она продемонстировала самые высокие показатели в покрытие вопросов и сходстве ответов.
+В то же время важно отметить, что среди всех методов лучшим образом в соотношение качество и время обработки себя показывает иерархический метод с фильтрацией узлов. Он позволяет существенно ускорить время обработки (например, почти в два раза для модели DeepSeek V3), и по сравнению с 
+чертежным методом, который в среднем показывал лучшие результаты, не сильно отстает по показателям. Исключением стала лишь модель Qwen3235B, так как она показала лучший результат среди всех моделей на базовом чертежном методе.
+Наши эксперименты показали, что иерархический метод с фильтрацией узлов обеспечивает наилучший компромисс между скоростью и качеством генерации.
+
 
 \begin{table}[ht]
 \centering
@@ -313,14 +329,14 @@ yagpt5lite & 34.17 & 14.08 & 99.70 & 27.26 \\
 \multirow{2}{*}{Qwen3-235B-A22B}
  & bertscore & 61.6 ± 3.3 & 59.3 ± 3.4 & 61.2 ± 3.0 & 60.9 ± 2.7 \\
  & rouge-l & 15.8 ± 4.5 & 12.2 ± 3.6 & 14.9 ± 4.0 & 14.8 ± 3.7 \\
- & coverage & 54.68 & 29.80 & 52.86 & 44.41\\
+ & coverage & \textbf{54.68} & 29.80 & 52.86 & 44.41\\
  & similarity & 44.18 & 24.27 & 41.77 & 35.40\\
  & time & 268.05 & 158.30 & 103.49 & 83.06 \\
 \midrule
 \multirow{2}{*}{DeepSeek V3}
  & bertscore & 58.0 ± 4.0 & 58.4 ± 3.6 & 60.0 ± 3.1 & 60.0 ± 2.9 \\
  & rouge-l & 12.6 ± 4.6 & 11.2 ± 3.9 & 13.7 ± 3.9 & 13.5 ± 3.7 \\
- & coverage & 40.41 & 34.73 & 53.19 & 44.76\\
+ & coverage & 40.41 & \textbf{34.73} & \textbf{53.19} & \textbf{44.76}\\
  & similarity & 32.35 & 28.02 & 42.46 & 35.47\\
  & time & 315.67 & 132.60 & 196.77 & 147.21 \\
 \midrule
@@ -333,9 +349,6 @@ yagpt5lite & 34.17 & 14.08 & 99.70 & 27.26 \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-Таблица \ref{tab:results_models} показывает, что модифицированные варианты методов действительно существенно ускоряют обработку: среднее время генерации сокращается в 1.5-3 раза в зависимости от модели (например, DeepSeek V3: 315.67 $\implies$ 132.60)
-Однако выигрыш по скорости сопровождается умеренным снижением качества: падение BERTScore и ROUGE-L чаще всего укладывается в 1-2 пункта и находится в пределах стандартных отклонений.
 % -------------------------------------------------------
 \FloatBarrier
 \section*{Заключение}
@@ -353,6 +366,20 @@ yagpt5lite & 34.17 & 14.08 & 99.70 & 27.26 \\
 Электронная библиотека кратких пересказов литературных произведений.  
 \url{https://wiki.briefly.ru/} (дата обращения: 16.07.2025).
 
+
+\bibitem{blueprint}
+\textit{Чертежный метод.}  
+Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
+System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
+//aclanthology.org/2023.eacl-demo.13/.
+
+\bibitem{hierarchical}
+\textit{Иерархический метод.}  
+BooookScore: A systematic exploration of book-length summarization in the era of
+LLMs / Yapei Chang, Kyle Lo, Tanya Goyal, Mohit Iyyer // The Twelfth International
+Conference on Learning Representations, ICLR 2024, Vienna, Austria, May 7-11, 2024.
+— OpenReview.net, 2024. https://openreview.net/forum?id=7Ttk3RzDeu.
+
 \end{thebibliography}
 
 \renewcommand\refname{References}
@@ -363,6 +390,19 @@ yagpt5lite & 34.17 & 14.08 & 99.70 & 27.26 \\
 \textit{Народный Брифли.}  
 Электронная библиотека кратких пересказов литературных произведений.  
 \url{https://wiki.briefly.ru/} (дата обращения: 16.07.2025).
+
+\bibitem{blueprint_e}
+\textit{Чертежный метод.}  
+Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
+System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
+//aclanthology.org/2023.eacl-demo.13/.
+
+\bibitem{hierarchical_e}
+\textit{Иерархический метод.}  
+BooookScore: A systematic exploration of book-length summarization in the era of
+LLMs / Yapei Chang, Kyle Lo, Tanya Goyal, Mohit Iyyer // The Twelfth International
+Conference on Learning Representations, ICLR 2024, Vienna, Austria, May 7-11, 2024.
+— OpenReview.net, 2024. https://openreview.net/forum?id=7Ttk3RzDeu.
 
 \end{thebibliography}
 
