@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1754402521.41524 "d:/MSU/year_4/semester_8/RCC/Articles/BoookSum/ai_journey/main.tex" "main.pdf" "main" 1754402523.01968 0
+["pdflatex"] 1754585625.87097 "d:/MSU/year_4/semester_8/RCC/Articles/BoookSum/ai_journey/main.tex" "main.pdf" "main" 1754585627.42206 0
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1754005431 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcbx1000.pk" 1752060787 12124 b5266333a997ef9c82167d72551a62cb ""
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0900.pk" 1753193903 10472 6dd5e80b76d4bcc7a01682f4a63bdf2e ""
@@ -156,13 +156,13 @@
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/tex/latex/tools/array.sty" 1749468414 15698 f5f20b24886bb50156054c53e19b13fd ""
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/tex/latex/tools/verbatim.sty" 1749468414 7532 26d26e9d8f2ca784270d5da8ec7d102b ""
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "d:/MSU/year_4/semester_8/RCC/Articles/BoookSum/ai_journey/main.tex" 1754402520 32837 88b92f5b27063ed9c26de9e9c78c9654 ""
+  "d:/MSU/year_4/semester_8/RCC/Articles/BoookSum/ai_journey/main.tex" 1754585623 39195 824a93239c97c176e87a501e4a5a65b1 ""
   "dan2e.sty" 1674159939 33604 1cc986cb32c5c4a9d02ceac326c7260f ""
   "figures/ann_len2.png" 1753451948 19874 b419cab954ed3ea64d211889e78d740f ""
   "figures/text_len2.png" 1753451916 18018 be7a624727c9d5ac28f9f80a8b503610 ""
-  "main.aux" 1754402522 2517 264070065bccbe07eb1acd1651a4cce3 "pdflatex"
-  "main.out" 1754402522 280 fdf0f87de610089fd65901d1b02a5fc5 "pdflatex"
-  "main.tex" 1754402520 32837 88b92f5b27063ed9c26de9e9c78c9654 ""
+  "main.aux" 1754585627 2783 24f24d057c1502203cb0736f32606831 "pdflatex"
+  "main.out" 1754585627 280 fdf0f87de610089fd65901d1b02a5fc5 "pdflatex"
+  "main.tex" 1754585623 39195 824a93239c97c176e87a501e4a5a65b1 ""
   (generated)
   "main.aux"
   "main.log"
