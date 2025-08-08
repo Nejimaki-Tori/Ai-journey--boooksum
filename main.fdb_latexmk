@@ -1,6 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1754585625.87097 "d:/MSU/year_4/semester_8/RCC/Articles/BoookSum/ai_journey/main.tex" "main.pdf" "main" 1754585627.42206 0
+["pdflatex"] 1754652228.94748 "d:/MSU/year_4/semester_8/RCC/Articles/BoookSum/ai_journey/main.tex" "main.pdf" "main" 1754652230.51484 0
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1754005431 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
+  "C:/Users/dagri/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcbx0900.pk" 1754652145 10788 1b07fcfc5d620094f186053df3a1904d ""
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcbx1000.pk" 1752060787 12124 b5266333a997ef9c82167d72551a62cb ""
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0900.pk" 1753193903 10472 6dd5e80b76d4bcc7a01682f4a63bdf2e ""
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1752502105 11548 6e52ef2db7a715a8ab0513a1283b8d4b ""
@@ -45,6 +46,7 @@
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/tfm/public/rsfs/rsfs5.tfm" 1752060750 684 3a51bd4fd9600428d5264cf25f04bb9a ""
   "C:/Users/dagri/AppData/Local/MiKTeX/fonts/tfm/public/rsfs/rsfs7.tfm" 1752060763 692 1b6510779f0f05e9cbf03e0f6c8361e6 ""
   "C:/Users/dagri/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1753797438 13254354 43b71b833b32492885bfd28422881394 ""
+  "C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/tcbx0900.tfm" 993062478 1460 d0178659d482ed2dab2d976492e7905f ""
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/tcbx1000.tfm" 993062478 1456 278016b1e421c8e979679e0372f68bf1 ""
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/tcrm0900.tfm" 993062508 1444 b1efc6b76338296f8076c1701e4660f3 ""
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/tcrm1000.tfm" 993062508 1436 c7f957a372ef2fbe93c0982f96625e12 ""
@@ -156,13 +158,13 @@
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/tex/latex/tools/array.sty" 1749468414 15698 f5f20b24886bb50156054c53e19b13fd ""
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/tex/latex/tools/verbatim.sty" 1749468414 7532 26d26e9d8f2ca784270d5da8ec7d102b ""
   "C:/Users/dagri/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "d:/MSU/year_4/semester_8/RCC/Articles/BoookSum/ai_journey/main.tex" 1754585623 39195 824a93239c97c176e87a501e4a5a65b1 ""
+  "d:/MSU/year_4/semester_8/RCC/Articles/BoookSum/ai_journey/main.tex" 1754652226 45895 847896679475c57474076b658c2eec6a ""
   "dan2e.sty" 1674159939 33604 1cc986cb32c5c4a9d02ceac326c7260f ""
   "figures/ann_len2.png" 1753451948 19874 b419cab954ed3ea64d211889e78d740f ""
   "figures/text_len2.png" 1753451916 18018 be7a624727c9d5ac28f9f80a8b503610 ""
-  "main.aux" 1754585627 2783 24f24d057c1502203cb0736f32606831 "pdflatex"
-  "main.out" 1754585627 280 fdf0f87de610089fd65901d1b02a5fc5 "pdflatex"
-  "main.tex" 1754585623 39195 824a93239c97c176e87a501e4a5a65b1 ""
+  "main.aux" 1754652230 3133 25a1e300d1a654a50ae6a1e9a7cecb4c "pdflatex"
+  "main.out" 1754652230 280 fdf0f87de610089fd65901d1b02a5fc5 "pdflatex"
+  "main.tex" 1754652226 45895 847896679475c57474076b658c2eec6a ""
   (generated)
   "main.aux"
   "main.log"
