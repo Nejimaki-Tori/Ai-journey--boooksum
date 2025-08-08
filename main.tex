@@ -1,7 +1,5 @@
-% -*- TeX -*-
 \documentclass{article}
 
-% --- preamble from template ---
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[russian]{babel}
@@ -13,7 +11,8 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{makecell}
-\usepackage[section]{placeins}
+\usepackage{tabularx}
+\usepackage{float}
 
 \usepackage{dan2e}
 
@@ -22,18 +21,8 @@
 \@ifundefined{@TVP}     {\newif\if@TVP    \@TVPfalse}{}
 \makeatother
 
-\theoremstyle{definition}
-\newtheorem{defi}{Определение}
-\theoremstyle{plain}
-\newtheorem{remark}{Пример}
-\newtheorem{theorem}{Теорема}
-\newtheorem{OldTheorem}{Теорема}
-\renewcommand{\theOldTheorem}{\Alph{OldTheorem}}
-
-\newtheorem{Theorem}{Теорема}
-\renewcommand{\theTheorem}{\arabic{theorem}$^\prime$}
-
 \begin{document}
+\raggedbottom
 \Volume{505}
 \Year{2025}
 \Pages{46--49}
@@ -67,6 +56,7 @@
 
 
 \maketitle
+\doi{10.31857/S2686954322040117}
 
 \begin{abstract}
 Работа исследует методы сжатия художественных текстов с помощью языковых моделей и предлагает улучшенные подходы для точного реферирования в условиях ограниченного контекста.
@@ -94,7 +84,7 @@ LLM, summarization, literature, books, brief retelling
 
 % ================= НАБОР ДАННЫХ =================
 \section*{Набор данных}
-\begin{figure}[h!]
+\begin{figure}[!htbp]
     \centering
     \begin{minipage}[t]{0.49\textwidth}
         \centering
@@ -119,7 +109,7 @@ LLM, summarization, literature, books, brief retelling
 после чего текст форматировался в единый стандартизированный вид, подходящий для дальнейшего использования в моделях. При сборе текстов возникли некоторые трудности: «Народный Брифли» и LibRuSec хранили информацию об авторах произведений в разном формате.
 Где-то была указана только фамилия автора, где-то целый список. Чтобы более точно связать книги с их аннотациями использовалось семантическое сходство: текст имени автора, записанный на Брифли и автора с LibRuSec переводился в эмбеддинги с помощью языковой модели
 и сравнивался по косинусному сходству. Таким образом удалось собрать гораздо больше произведений, чем получилось изначально. В таблице \ref{tab:datasets} представлены примеры некоторых различий.
-\begin{table}[ht]
+\begin{table}[ht!]
 \centering
 \caption{Сравнение форматов хранения в разных датасетах}
 \label{tab:datasets}
@@ -144,7 +134,6 @@ LibRuSec & Башня Волверден & [Аллен Грант] \\
 
 % ================= ПРИМЕНЕНИЕ МЕТОДОВ =================
 \section*{Методология}
-
 \subsection*{Базовые и модифицированные стратегии}
 
 \subsubsection*{Иерархический метод.}
@@ -154,7 +143,7 @@ LibRuSec & Башня Волверден & [Аллен Грант] \\
 следующего уровня. Последний уровень представляет собой итоговую аннотацию всего произведения.
 
 \subsubsection*{«Чертёжный» метод (Text‑Blueprint).}
-Данный метод \cite{blueprint} ориентирован на построение промежуточного
+Данный метод \cite{blueprint} по сути является модификацией иерархического и ориентирован на построение промежуточного
 плана аннотации перед генерацией текста. План формируется в виде набора вопросноответных пар, что повышает управляемость генерации и обеспечивает структурированность результата.
 Сначала модель формирует список вопросов, отражающих ключевые события, темы
 и персонажей текста. Далее к каждому вопросу автоматически подбирается краткий
@@ -163,40 +152,53 @@ LibRuSec & Башня Волверден & [Аллен Грант] \\
 \subsubsection*{Иерархический метод с фильтрацией узлов.}
 Является модифицированным иерархическим методом. Направлен на ускорение генерации за счет удаления потенциально излишних частей информации, что повышает плотность полезной информации в итоговых рефератах. 
 Для исключения «воды» и дублирующих фрагментов на каждом уровне иерархии мы теперь выполняем глобальную проверку семантической близости между всеми промежуточными аннотациями. 
-\\Алгоритм следующий:
-
-\begin{enumerate}
-  \item Пусть на текущем уровне имеются аннотации $\{S_i\}_{i=1}^n$.
-  \item Вычисляем эмбеддинги $\mathbf{e}_i = \mathrm{Encoder}(S_i)$ и нормируем их.
-  \item Составляем матрицу косинусных сходств
-    \[
-      M_{ij} = \frac{\mathbf{e}_i \cdot \mathbf{e}_j}{\|\mathbf{e}_i\|\;\|\mathbf{e}_j\|},
-      \quad i,j=1,\dots,n.
-    \]
-  \item Для каждой аннотации $S_j$ находим
-    \[
-      m_j = \max_{\,i<j} M_{ji},
-    \]
-    то есть максимальную степень схожести с любой предыдущей в списке.
-  \item Если $m_j < \theta$ (где $\theta=0.85$), то сохраняем $S_j$, иначе отбрасываем.
-  \item Гарантируем, что $S_1$ всегда остаётся, чтобы не получилось пустого уровня.
-\end{enumerate}
+\\Алгоритм представлен в таблице \ref{tab:hier-filter}:
+\begin{table}[ht!]
+\centering
+\caption{Иерархический метод с фильтрацией узлов}
+\label{tab:hier-filter}
+\small
+\begin{tabular}{l|c|c}
+\toprule
+\textbf{Шаг} & \textbf{Действие} & \textbf{Примечания} \\
+\midrule
+1 & Исходные аннотации уровня & $\{S_i\}_{i=1}^n$ \\
+2 & Вычислить и нормировать эмбеддинги & $\mathbf{e}_i=\mathrm{Encoder}(S_i)$ \\
+3 & Построить матрицу косинусных сходств &
+$M_{ij}=\dfrac{\mathbf{e}_i\cdot \mathbf{e}_j}{\|\mathbf{e}_i\|\,\|\mathbf{e}_j\|}$ \\
+4 & Для каждого $S_j$ найти ближайшую предыдущую &
+$m_j=\max_{i<j} M_{ji}$ \\
+5 & Применить пороговую фильтрацию &
+$m_j<\theta$ (где $\theta=0.85$)\\
+6 & Гарантировать непустой уровень & $S_1$ всегда сохраняется \\
+\bottomrule
+\end{tabular}
+\end{table}
 Эмбеддинги получаются с помощью SentenceTransformer (модель USER-bge-m3) и при вычислении на GPU обеспечивается высокая скорость обработки.
 
-\subsubsection*{«Чертёжный» метод с кластеризацией вопросов.}
-Для снижения числа запросов к модели и повышения структурности:
-\begin{enumerate}
-  \item Для каждого чанка $C_i$ сгенерировать вопросы $Q_i = \{q_{i1},\dots,q_{im}\}$.
-  \item Вычислить эмбеддинги $E_i = \{\mathbf{e}_{i1},\dots,\mathbf{e}_{im}\}$.
-  \item Объединить все $\{\mathbf{e}_{ij}\}$ и применить алгоритм K‑means.
-  \item Из каждого кластера $c$ случайно выбрать несколько вопросов.
-  \item Для кластера $c$ сформировать обобщённый вопрос $Q_c^*$:
-    \[
-      Q_c^* = \mathrm{LLM}\bigl(\,\text{concat}(q\in c)\bigr).
-    \]
-  \item Использовать $\{Q_c^*\}$ как чертёж для генерации итоговой аннотации.
-\end{enumerate}
 
+\subsubsection*{«Чертёжный» метод с кластеризацией вопросов.}
+Для снижения числа запросов к модели и повышения структурности, используется алгоритм, представленный в таблице \ref{tab:blueprint-kmeans}.
+\begin{table}[H]
+\centering
+\caption{«Чертёжный» метод с кластеризацией вопросов}
+\label{tab:blueprint-kmeans}
+\small
+\begin{tabular}{l|c|c}
+\toprule
+\textbf{Шаг} & \textbf{Действие} & \textbf{Примечания} \\
+\midrule
+1 & Для каждого чанка $C_i$ сгенерировать вопросы &
+$Q_i=\{q_{i1},\dots,q_{im}\}$ \\
+2 & Посчитать эмбеддинги вопросов &
+$E_i=\{\mathbf{e}_{i1},\dots,\mathbf{e}_{im}\}$ \\
+3 & Объединить все эмбеддинги и кластеризовать & K-means по всем $\{\mathbf{e}_{ij}\}$ \\
+4 & Сформировать обобщённый вопрос для кластера &
+$Q_c^*=\mathrm{LLM}\bigl(\text{concat}(q\in c)\bigr)$ \\
+5 & Использовать $\{Q_c^*\}$ как план & Генерация итоговой аннотации \\
+\bottomrule
+\end{tabular}
+\end{table}
 Такой подход позволяет уменьшить число обращений к LLM, что позволяет ускорить скорость генераций, как будет показано в таблице \ref{tab:results_models}.
 
 \section*{Оценивание методов}
@@ -232,7 +234,7 @@ LibRuSec & Башня Волверден & [Аллен Грант] \\
     где $\mathrm{sim}$ — косинусное сходство эмбеддингов, полученных через USER‑bge‑m3.
 
 
-Использование нескольких метрик, учитывающих как поверхностное совпадение текста (ROUGE‑L), так и глубокое семантическое сходство (BERTScore, AnswerSimilarity), а также степень охвата заранее заданных вопросов (Coverage), обеспечивает всестороннюю и устойчивую оценку качества аннотаций.```
+Использование нескольких метрик, учитывающих как поверхностное совпадение текста, так и глубокое семантическое сходство (BERTScore, AnswerSimilarity), а также степень охвата заранее заданных вопросов (Coverage), обеспечивает всестороннюю и устойчивую оценку качества аннотаций.
 
 \section*{Параметры экспериментов}
 
@@ -280,15 +282,14 @@ yagpt5lite & 34.17 & 14.08 & 99.70 & 27.26 \\
 \end{table}
 
 \section*{Результаты}
-
+\subsection*{Полученные результаты.}
 В таблице \ref{tab:results_models} представлены сравнительные метрики качества автоматического пересказа книг разными моделями и методами обработки. Для каждой комбинации модели и метода измерялись BERTScore, ROUGEL, Answer Coverage и 
 Similarity, а также время генерации (среднее) на 100 примерах, одинаковых для всех замеров. Лучше всего себя показала модель Qwen3235B: она продемонстировала самые высокие показатели в покрытие вопросов и сходстве ответов.
 В то же время важно отметить, что среди всех методов лучшим образом в соотношение качество и время обработки себя показывает иерархический метод с фильтрацией узлов. Он позволяет существенно ускорить время обработки (например, почти в два раза для модели DeepSeek V3), и по сравнению с 
 чертежным методом, который в среднем показывал лучшие результаты, не сильно отстает по показателям. Исключением стала лишь модель Qwen3235B, так как она показала лучший результат среди всех моделей на базовом чертежном методе.
 Наши эксперименты показали, что иерархический метод с фильтрацией узлов обеспечивает наилучший компромисс между скоростью и качеством генерации.
 
-
-\begin{table}[ht]
+\begin{table}[ht!]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
@@ -303,7 +304,7 @@ Similarity, а также время генерации (среднее) на 10
 \makecell{Иерархический \\ с фильтрацией} &
 \makecell{Чертежный \\ с кластеризацией} \\
 \midrule
-\multirow{5}{*}{RuadaptQwen2.5-7B-Lite-Beta}
+\multirow{5}{*}{\makecell{RuadaptQwen2.5-7B\\Lite-Beta}}
  & bertscore & 55.4 ± 2.9 & 56.1 ± 4.9 & 55.8 ± 2.9 & 54.0 ± 4.0 \\
  & rouge-l   & 8.6 ± 2.5 & 10.1 ± 3.9 & 8.7 ± 2.5 & 7.7 ± 2.8 \\
  & coverage  & 19.66 ± 17.77 & 24.94 ± 21.08 & 20.31 ± 17.95 & 15.51 ± 14.83 \\
@@ -317,7 +318,7 @@ Similarity, а также время генерации (среднее) на 10
  & similarity& 29.69 ± 16.43 & 26.58 ± 18.13 & 25.60 ± 16.85 & 19.70 ± 14.29 \\
  & time      & 31.02 ± 28.51 & 113.34 ± 123.78 & 27.39 ± 28.05 & 42.15 ± 56.50 \\
 \midrule
-\multirow{5}{*}{RuadaptQwen3-32B-Instruct-v2}
+\multirow{5}{*}{\makecell{RuadaptQwen3-32B\\Instruct-v2}}
  & bertscore & 57.3 ± 2.9 & 58.9 ± 3.6 & 57.7 ± 3.3 & 55.3 ± 3.3 \\
  & rouge-l   & 11.0 ± 2.4 & 10.6 ± 3.2 & 10.7 ± 2.4 & 7.8 ± 2.1 \\
  & coverage  & 33.12 ± 21.50 & 33.18 ± 22.83 & 32.19 ± 22.52 & 17.72 ± 15.23 \\
@@ -360,9 +361,9 @@ Similarity, а также время генерации (среднее) на 10
 из-за чего суть произведения сложно уловить и модель отвлекается от фиксации главных фактов,
 тогда как в "И грянул гром" события изложены последовательно и структурировано, 
 а основные элементы сюжета чётко перечислены, что упрощает их сохранение и воспроизведение.
-\begin{table}[h!]
+\begin{table}[ht!]
 \centering
-\begin{tabular}{|p{0.15\linewidth}|p{0.8\linewidth}|}
+\begin{tabular}{|p{0.15\linewidth}|p{0.75\linewidth}|}
 \hline
 \makecell{\textbf{Название}} & \makecell{\textbf{Текст}} \\ \hline
 
@@ -392,16 +393,15 @@ Similarity, а также время генерации (среднее) на 10
 \caption{Сравнение двух аннотаций}
 \label{tab:annotations}
 \end{table}
-\FloatBarrier
 Переходя к сравнению между моделями, можно отметить, что в целом DeepSeek V3 показывает лучшие показатели, чем модели меньшей категории, однако, если сравнивать чертежный метод, то в 30\% случаев модель 
 RuadaptQwen3 показывает лучшие результаты, а tpro в 43 (из 100). Для сравнения можно взять аннотацию по произведению <<И грянул гром>>, созданную с использованием чертежного метода, 
 небольшие вырезки которой приведены в таблице \ref{tab:annotations_deepseek_vs_others}.
 В то время как аннотация, созданная моделью DeepSeek V3 больше похожа на перечесление основных событий через нумерованный список,
 текст у моделей RuadaptQwen3 и tpro является связным пересказом текста, раскрывающим все основные события сюжета.
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \centering
-\begin{tabular}{|p{0.15\linewidth}|p{0.8\linewidth}|}
+\begin{tabular}{|p{0.15\linewidth}|p{0.75\linewidth}|}
 \hline
 \makecell{\textbf{Модель}} & \makecell{\textbf{Текст}} \\ \hline
 
@@ -455,6 +455,9 @@ RuadaptQwen3 показывает лучшие результаты, а tpro в 
 Электронная библиотека кратких пересказов литературных произведений.  
 \url{https://wiki.briefly.ru/} (дата обращения: 16.07.2025).
 
+\bibitem{hierarchical}
+\textit{Иерархический метод.}  
+Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
 
 \bibitem{blueprint}
 \textit{Чертежный метод.}  
@@ -462,9 +465,7 @@ Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / 
 System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
 //aclanthology.org/2023.eacl-demo.13/.
 
-\bibitem{hierarchical}
-\textit{Иерархический метод.}  
-Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
+
 
 \end{thebibliography}
 
@@ -477,15 +478,15 @@ Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints.
 Электронная библиотека кратких пересказов литературных произведений.  
 \url{https://wiki.briefly.ru/} (дата обращения: 16.07.2025).
 
+\bibitem{hierarchical_e}
+\textit{Иерархический метод.}  
+Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
+
 \bibitem{blueprint_e}
 \textit{Чертежный метод.}  
 Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
 System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
 //aclanthology.org/2023.eacl-demo.13/.
-
-\bibitem{hierarchical_e}
-\textit{Иерархический метод.}  
-Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
 
 \end{thebibliography}
 
