@@ -13,6 +13,9 @@
 \usepackage{makecell}
 \usepackage{tabularx}
 \usepackage{float}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \usepackage{dan2e}
 
@@ -20,6 +23,17 @@
 \@ifundefined{@Russian}{\newif\if@Russian \@Russiantrue}{}
 \@ifundefined{@TVP}     {\newif\if@TVP    \@TVPfalse}{}
 \makeatother
+
+% ---------- Algorithmic styling ----------
+\algrenewcommand\algorithmicrequire{\textbf{Require:}}
+\algrenewcommand\algorithmicensure{\textbf{Ensure:}}
+\algrenewcommand\algorithmicforall{\textbf{for each}}
+\algrenewcommand\algorithmiccomment[1]{\hfill\(\triangleright\)~#1}
+
+% ---------- Helpers ----------
+\newcommand{\Group}{\mathrm{Group}}
+\newcommand{\Concat}{\mathrm{Concat}}
+\newcommand{\norm}{\mathrm{norm}}
 
 \begin{document}
 \raggedbottom
@@ -132,45 +146,72 @@ LLM, summarization, literature, books, brief retelling
 \section*{Методология}
 \subsection*{Базовые и модифицированные стратегии.}
 
-\subsubsection*{Иерархический метод.}
+\subsubsection*{Иерархический метод. (Algorithm 1)}
 Суть этого метода \cite{hierarchical} заключается в том, что текст разбивается на фрагменты (чанки), для каждого из
 которых отдельно генерируется локальная аннотация. 
 Эти фрагменты затем объединяются в группы, и из полученных аннотаций снова формируется краткое содержание
 следующего уровня. Последний уровень представляет собой итоговую аннотацию всего произведения.
 
+\subsubsection*{Иерархический метод с фильтрацией узлов. (Algorithm 2)}
+Является модифицированным иерархическим методом. Направлен на ускорение генерации за счет удаления потенциально излишних частей информации, что повышает плотность полезной информации в итоговых рефератах. 
+Для исключения малоинформативных или дублирующих фрагментов на каждом уровне иерархии мы теперь выполняем глобальную проверку семантической близости между всеми промежуточными аннотациями. 
+Эмбеддинги получаются с помощью SentenceTransformer (модель USER-bge-m3) и при вычислении на GPU обеспечивается высокая скорость обработки.
+
+\noindent
+\begin{minipage}[t]{0.49\textwidth}
+\begin{algorithm}[H]
+\caption{Иерархический метод}
+\begin{algorithmic}
+\Require $D$ - входной текст, длиной $L \gg W$ $p_\theta$ - модель
+\State Разбить $D$ на чанки $c_1\dots c_{\lceil \frac{L}{C} \rceil}$
+\For{$c_i=c_1\dots c_{\lceil \frac{L}{C} \rceil}$}
+\State $S_0 \gets SummarizeChunk(p_\theta, c_i)$\
+\EndFor
+\Repeat
+  \State $Groups \gets GroupSummaries(S_l)$
+  \State $\ell \gets \ell + 1$
+  \For{$g \in Groups$}
+    \State $S_l \gets \{MergeGroup(p_\theta,g)\}$
+  \EndFor
+\Until{$|S_l|=1$}
+\State \Return $S_l[1]$
+\end{algorithmic}
+\end{algorithm}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\begin{algorithm}[H]
+\caption{Иерархический метод с фильтрацией}
+\begin{algorithmic}
+\Require $D$ - входной текст, длиной $L \gg W$ $p_\theta$ - модель, $\theta$ - порог сходства
+\State Разбить $D$ на чанки $c_1\dots c_{\lceil \frac{L}{C} \rceil}$
+\State $S_0 \gets \{c_1\dots c_{\lceil \frac{L}{C} \rceil}\}$
+\Repeat
+  \For{$s \in S_l$}
+    \State $e \gets Encoder(s)$
+    \State $M_{ij} \gets \dfrac{\mathbf{e}_i\cdot \mathbf{e}_j}{\|\mathbf{e}_i\|\,\|\mathbf{e}_j\|}$\Comment{Матрица эмбеддингов}
+    \State{Вычисляется максимальное сходство}
+  \State{с предыдущими рефератами.}
+    \State $m_j=\max_{i<j} M_{ji}$
+    \State $S_l \gets \{s_i \mid m_i < \theta$ \textbf{ or } $i = 0 \}$ \Comment{Фильтрация}
+  \EndFor
+  \State $Groups \gets GroupSummaries(S_l)$
+  \State $\ell \gets \ell + 1$
+  \For{$g \in Groups$}
+    \State $S_l \gets \{MergeGroup(p_\theta,g)\}$
+  \EndFor
+\Until{$|S_l|=1$}
+\State \Return $S_l[1]$
+\end{algorithmic}
+\end{algorithm}
+\end{minipage}
+
+\vspace{0.4em}
 \subsubsection*{«Чертёжный» метод (Text‑Blueprint).}
 Данный метод \cite{blueprint} по сути является модификацией иерархического и ориентирован на построение промежуточного
 плана аннотации перед генерацией текста. План формируется в виде набора вопросноответных пар, что повышает управляемость генерации и обеспечивает структурированность результата.
 Сначала модель формирует список вопросов, отражающих ключевые события, темы
 и персонажей текста. Далее к каждому вопросу автоматически подбирается краткий
 ответ. Эта структура служит планом, по которому генерируется итоговая аннотация.
-
-\subsubsection*{Иерархический метод с фильтрацией узлов.}
-Является модифицированным иерархическим методом. Направлен на ускорение генерации за счет удаления потенциально излишних частей информации, что повышает плотность полезной информации в итоговых рефератах. 
-Для исключения малоинформативных или дублирующих фрагментов на каждом уровне иерархии мы теперь выполняем глобальную проверку семантической близости между всеми промежуточными аннотациями. 
-\\Алгоритм представлен в таблице \ref{tab:hier-filter}:
-\begin{table}[ht!]
-\centering
-\caption{Иерархический метод с фильтрацией узлов}
-\label{tab:hier-filter}
-\small
-\begin{tabular}{l|c|c}
-\toprule
-\textbf{Шаг} & \textbf{Действие} & \textbf{Примечания} \\
-\midrule
-1 & Исходные аннотации уровня & $\{S_i\}_{i=1}^n$ \\
-2 & Вычислить и нормировать эмбеддинги & $\mathbf{e}_i=\mathrm{Encoder}(S_i)$ \\
-3 & Построить матрицу косинусных сходств &
-$M_{ij}=\dfrac{\mathbf{e}_i\cdot \mathbf{e}_j}{\|\mathbf{e}_i\|\,\|\mathbf{e}_j\|}$ \\
-4 & Для каждого $S_j$ найти ближайшую предыдущую &
-$m_j=\max_{i<j} M_{ji}$ \\
-5 & Применить пороговую фильтрацию &
-$m_j<\theta$ (где $\theta=0.85$)\\
-6 & Гарантировать непустой уровень & $S_1$ всегда сохраняется \\
-\bottomrule
-\end{tabular}
-\end{table}
-Эмбеддинги получаются с помощью SentenceTransformer (модель USER-bge-m3) и при вычислении на GPU обеспечивается высокая скорость обработки.
 
 
 \subsubsection*{«Чертёжный» метод с кластеризацией вопросов.}
@@ -196,6 +237,30 @@ $Q_c^*=\mathrm{LLM}\bigl(\text{concat}(q\in c)\bigr)$ \\
 \end{tabular}
 \end{table}
 Такой подход позволяет уменьшить число обращений к LLM, что позволяет ускорить скорость генераций, как будет показано в таблице \ref{tab:results_models}.
+
+% ====================== ROW 2: Blueprint ======================
+\noindent
+\begin{minipage}[t]{0.49\textwidth}
+\begin{algorithm}[H]
+\caption{Text-Blueprint: построение плана}
+\begin{algorithmic}[1]
+\Require $x, p_\theta, QGen, Ans, m$
+\State $Q \gets QGen(p_\theta,x,m)$ \Comment{ключевые вопросы}
+\State $B \gets [\, (q,\,Ans(p_\theta,x,q)) \mid q\in Q \,]$ \Comment{Q\&A-каркас}
+\State \Return $B$
+\end{algorithmic}
+\end{algorithm}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\begin{algorithm}[H]
+\caption{Text-Blueprint: генерация по плану}
+\begin{algorithmic}[1]
+\Require $B, p_\theta, G$
+\State \Return $G(p_\theta,B)$ \Comment{структурированная итоговая аннотация}
+\end{algorithmic}
+\end{algorithm}
+\end{minipage}
+
 
 \section*{Оценивание методов}
 
