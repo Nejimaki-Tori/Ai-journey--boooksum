@@ -117,20 +117,26 @@ LLM, summarization, literature, books, brief retelling
 и сравнивался по косинусному сходству.
 \begin{figure}[!htbp]
     \centering
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/text_len2.png}
-        \caption{Гистограмма с количеством слов в текстах}
-        \label{fig:text_len}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[t]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/ann_len2.png}
-        \caption{Гистограмма с количеством слов в аннотациях}
-        \label{fig:ann_len}
-    \end{minipage}
+    \includegraphics[width=\linewidth]{figures/genres_pie.png}
+    \caption{Распределение текстов по жанрам (топ 10 жанров)}
+    \label{fig:genres}
 \end{figure}
+
+\begin{table}[ht]
+\centering
+\caption{Обзор датасетов}
+\label{tab:dataset_info}
+\begin{tabular}{l|cccc}
+\toprule
+\textbf{Датасет} & \makecell{Число документов} & \makecell{Средняя длина \\ документа \\ (\# слов)} & \makecell{Средняя длина \\ реферата \\ (\# слов)} & \makecell{Степень сжатия \\ (длина текста \\/ длина реферата)} \\
+\midrule
+\textbf{RuBookSum}  & 634 & 35052.64 & 700.77 & 0.0843 \\
+\hline
+BookSum    & 405 & 112885.15 & 1167.20 & 0.0079 \\
+Gazeta     & 60964 & 632.77 & 41.94 & 0.0699 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 Важно отметить, что при создании корпуса использовались только тексты, находящиеся в общественном достоянии или распространяемые свободно с разрешения правообладателей, что обеспечивает соблюдение требований авторского права.
 Тексты аннотаций проходили автоматическую очистку от HTML‑тегов, комментариев и служебных пометок с помощью LLM~Meta--Llama~3--70B--Instruct. Затем производился поиск по датасету LibRuSec и собиралась коллекция, состоящая из пар "текст книги - аннотация".
@@ -140,7 +146,7 @@ LLM, summarization, literature, books, brief retelling
   \item исходные произведения из электронной библиотеки LibRuSec;
 \end{itemize}
 
-На рисунке \ref{fig:text_len} показано распределение текстов в зависимотсти от количества слов в них. На рисунке \ref{fig:ann_len} аналогичная информация об аннотациях.
+На рисунке \ref{fig:genres} показано жанровое разнообразие текстов. В таблице \ref{tab:dataset_info} приведена общая информация о датасете в сравнении с аналогами.
 
 % ================= ПРИМЕНЕНИЕ МЕТОДОВ =================
 \section*{Методология}
@@ -150,63 +156,69 @@ LLM, summarization, literature, books, brief retelling
 Суть этого метода \cite{hierarchical} заключается в том, что текст разбивается на фрагменты (чанки), для каждого из
 которых отдельно генерируется локальная аннотация. 
 Эти фрагменты затем объединяются в группы, и из полученных аннотаций снова формируется краткое содержание
-следующего уровня. Последний уровень представляет собой итоговую аннотацию всего произведения.
+следующего уровня. Последний уровень представляет собой итоговый реферат всего произведения.
 
 \subsubsection*{Иерархический метод с фильтрацией узлов. (Algorithm 2)}
-Является модифицированным иерархическим методом. Направлен на ускорение генерации за счет удаления потенциально излишних частей информации, что повышает плотность полезной информации в итоговых рефератах. 
-Для исключения малоинформативных или дублирующих фрагментов на каждом уровне иерархии мы теперь выполняем глобальную проверку семантической близости между всеми промежуточными аннотациями. 
+Классический иерархический метод строит итоговый реферат путём многослойного объединения промежуточных рефератов, полученных из отдельных фрагментов текста. 
+Однако в литературных произведениях часто встречаются фрагменты, которые не оказывают большого влияния на развитие сюжета и содержат множество избыточных
+повторов и второстепенной информации. Эти фрагменты при генерации итоговой аннотации могут снижать её информативность, а в некоторых случаях даже мешать модели на этапе реферирования отдельных фрагментов.
+
+Чтобы решить эту проблему, в метод была имплементирована фильтрация узлов по семантической близости. 
+Для исключения малоинформативных или дублирующих фрагментов на каждом уровне иерархии выполняется глобальная проверка семантической близости между всеми промежуточными рефератами. 
+Фрагменты, близкие по косинусной мере с предыдущими, считаются избыточными и не используются при составлении реферата на текущем уровне.
 Эмбеддинги получаются с помощью SentenceTransformer (модель USER-bge-m3) и при вычислении на GPU обеспечивается высокая скорость обработки.
+Эта модификация направлена на ускорение генерации за счет удаления потенциально излишних частей информации, что повышает плотность полезной информации в итоговых рефератах. 
 
 \noindent
 \begin{minipage}[t]{0.49\textwidth}
-\begin{algorithm}[H]
-\caption{Иерархический метод}
-\begin{algorithmic}
-\Require $D$ - входной текст, длиной $L \gg W$ $p_\theta$ - модель
-\State Разбить $D$ на чанки $c_1\dots c_{\lceil \frac{L}{C} \rceil}$
-\For{$c_i=c_1\dots c_{\lceil \frac{L}{C} \rceil}$}
-\State $S_0 \gets SummarizeChunk(p_\theta, c_i)$\
-\EndFor
-\Repeat
-  \State $Groups \gets GroupSummaries(S_l)$
-  \State $\ell \gets \ell + 1$
-  \For{$g \in Groups$}
-    \State $S_l \gets \{MergeGroup(p_\theta,g)\}$
-  \EndFor
-\Until{$|S_l|=1$}
-\State \Return $S_l[1]$
-\end{algorithmic}
-\end{algorithm}
+  \begin{algorithm}[H]
+  \caption{Иерархический метод}
+    \begin{algorithmic}
+      \Require $W$ - контекстное окно модели, $D$ - входной текст, длиной $L \gg W$, $p_\theta$ - модель, $C$ - длина чанка
+      \State Разбить $D$ на чанки $c_1\dots c_{\lceil \frac{L}{C} \rceil}$
+      \For{$c_i=c_1\dots c_{\lceil \frac{L}{C} \rceil}$}
+        \State $S_0 \gets SummarizeChunk(p_\theta, c_i)$\
+      \EndFor
+      \Repeat
+        \State $Groups \gets GroupSummaries(S_l)$
+        \State $\ell \gets \ell + 1$
+        \For{$g \in Groups$}
+          \State $S_l \gets \{MergeGroup(p_\theta,g)\}$
+        \EndFor
+      \Until{$|S_l|=1$}
+      \State \Return $S_l[1]$
+    \end{algorithmic}
+  \end{algorithm}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.49\textwidth}
-\begin{algorithm}[H]
-\caption{Иерархический метод с фильтрацией}
-\begin{algorithmic}
-\Require $D$ - входной текст, длиной $L \gg W$ $p_\theta$ - модель, $\theta$ - порог сходства
-\State Разбить $D$ на чанки $c_1\dots c_{\lceil \frac{L}{C} \rceil}$
-\State $S_0 \gets \{c_1\dots c_{\lceil \frac{L}{C} \rceil}\}$
-\Repeat
-  \For{$s \in S_l$}
-    \State $e \gets Encoder(s)$
-    \State $M_{ij} \gets \dfrac{\mathbf{e}_i\cdot \mathbf{e}_j}{\|\mathbf{e}_i\|\,\|\mathbf{e}_j\|}$\Comment{Матрица эмбеддингов}
-    \State{Вычисляется максимальное сходство}
-  \State{с предыдущими рефератами.}
-    \State $m_j=\max_{i<j} M_{ji}$
-    \State $S_l \gets \{s_i \mid m_i < \theta$ \textbf{ or } $i = 0 \}$ \Comment{Фильтрация}
-  \EndFor
-  \State $Groups \gets GroupSummaries(S_l)$
-  \State $\ell \gets \ell + 1$
-  \For{$g \in Groups$}
-    \State $S_l \gets \{MergeGroup(p_\theta,g)\}$
-  \EndFor
-\Until{$|S_l|=1$}
-\State \Return $S_l[1]$
-\end{algorithmic}
-\end{algorithm}
+  \begin{algorithm}[H]
+    \caption{Иерархический метод с фильтрацией}
+    \begin{algorithmic}
+      \Require $W$ - контекстное окно модели, $D$ - входной текст, длиной $L \gg W$, $p_\theta$ - модель, $\theta$ - порог сходства, $C$ - длина чанка
+      \State Разбить $D$ на чанки $c_1\dots c_{\lceil \frac{L}{C} \rceil}$
+      \State $S_0 \gets \{c_1\dots c_{\lceil \frac{L}{C} \rceil}\}$
+      \Repeat
+        \For{$s_i \in S_l$}
+          \State $e_i \gets Encoder(s_i)$
+          \State $M_{ij} \gets \dfrac{\mathbf{e}_i\cdot \mathbf{e}_j}{\|\mathbf{e}_i\|\,\|\mathbf{e}_j\|}$\Comment{Матрица эмбеддингов}
+          \State{Вычисляется максимальное сходство}
+        \State{с предыдущими рефератами.}
+          \State $m_j=\max_{i<j} M_{ji}$
+          \State $S_l \gets \{s_i \mid m_i < \theta$ \textbf{ or } $i = 0 \}$ \Comment{Фильтрация}
+        \EndFor
+        \State $Groups \gets GroupSummaries(S_l)$
+        \State $\ell \gets \ell + 1$
+        \For{$g \in Groups$}
+          \State $S_l \gets \{MergeGroup(p_\theta,g)\}$
+        \EndFor
+      \Until{$|S_l|=1$}
+      \State \Return $S_l[1]$
+    \end{algorithmic}
+  \end{algorithm}
 \end{minipage}
 
 \vspace{0.4em}
-\subsubsection*{«Чертёжный» метод (Text‑Blueprint).}
+\subsubsection*{«Чертёжный» метод (Text‑Blueprint). (Algorithm 3)}
 Данный метод \cite{blueprint} по сути является модификацией иерархического и ориентирован на построение промежуточного
 плана аннотации перед генерацией текста. План формируется в виде набора вопросноответных пар, что повышает управляемость генерации и обеспечивает структурированность результата.
 Сначала модель формирует список вопросов, отражающих ключевые события, темы
@@ -214,55 +226,72 @@ LLM, summarization, literature, books, brief retelling
 ответ. Эта структура служит планом, по которому генерируется итоговая аннотация.
 
 
-\subsubsection*{«Чертёжный» метод с кластеризацией вопросов.}
-Для снижения числа запросов к модели и повышения структурности, используется алгоритм, представленный в таблице \ref{tab:blueprint-kmeans}.
-\begin{table}[H]
-\centering
-\caption{«Чертёжный» метод с кластеризацией вопросов}
-\label{tab:blueprint-kmeans}
-\small
-\begin{tabular}{l|c|c}
-\toprule
-\textbf{Шаг} & \textbf{Действие} & \textbf{Примечания} \\
-\midrule
-1 & Для каждого чанка $C_i$ сгенерировать вопросы &
-$Q_i=\{q_{i1},\dots,q_{im}\}$ \\
-2 & Посчитать эмбеддинги вопросов &
-$E_i=\{\mathbf{e}_{i1},\dots,\mathbf{e}_{im}\}$ \\
-3 & Объединить все эмбеддинги и кластеризовать & K-means по всем $\{\mathbf{e}_{ij}\}$ \\
-4 & Сформировать обобщённый вопрос для кластера &
-$Q_c^*=\mathrm{LLM}\bigl(\text{concat}(q\in c)\bigr)$ \\
-5 & Использовать $\{Q_c^*\}$ как план & Генерация итоговой аннотации \\
-\bottomrule
-\end{tabular}
-\end{table}
+\subsubsection*{«Чертёжный» метод с кластеризацией вопросов. (Algorithm 4)}
+Базовая реализация «чертёжного» метода предполагает генерацию вопросно-ответного
+плана для каждого фрагмента текста и каждого уровня объединения аннотаций. Однако при работе с художественными текстами вопросы, генерируемые для каждого чанка,
+могут сбивать агрегацию текста моделью, делая аннотацию менее структурированной
+и содержательно полной. К тому же, генерация плана на каждом шаге алгоритма существенно замедляет его работу и использует дополнительные мощности языковых моделей.
+Для снижения числа запросов к модели и повышения структурности, была добавлена кластеризация вопросов с использованием SentenceTransformers и алгоритма K-means.
+
+\noindent
+\begin{minipage}[t]{0.49\textwidth}
+  \begin{algorithm}[H]
+    \caption{<<Чертежный>> метод}
+    \begin{algorithmic}
+      \Require $W$ - контекстное окно модели, $D$ - входной текст, длиной $L \gg W$, $p_\theta$ - модель, $C$ - длина чанка, $R$ - ограничение по длине
+      \State Разбить $D$ на чанки $c_1\dots c_{\lceil \frac{L}{C} \rceil}$
+      \For{$c_i=c_1\dots c_{\lceil \frac{L}{C} \rceil}$}
+        \State $b_i \gets GenerateBlueprint(p_\theta, c_i)$\
+        \State $S_0 \gets \{SummarizeWithBp(p_\theta, b_i, c_i)\}$\
+      \EndFor
+      \Repeat \Comment{Объединение рефератов}
+        \State $Groups \gets GroupSummaries(S_l)$
+        \State $\ell \gets \ell + 1$
+        \For{$g \in Groups$}
+          \If{$Length(g) > R$}
+            \State $b_i \gets GenerateBlueprint(p_\theta, g)$\
+            \State $S_l \gets \{SummarizeWithBp(p_\theta, b_i, g)\}$\
+          \Else
+            \State $S_l \gets \{g\}$\
+          \EndIf
+        \EndFor
+      \Until{$|S_l|=1$}
+      \State \Return $S_l[1]$
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}
+  \begin{algorithm}[H]
+  \caption{<<Чертежный>> метод с кластеризацией}
+      \begin{algorithmic}
+        \Require $W$ - контекстное окно модели, $D$ - входной текст, длиной $L \gg W$, $p_\theta$ - модель, $C$ - длина чанка, $R$ - ограничение по длине
+        \State Разбить $D$ на чанки $c_1\dots c_{\lceil \frac{L}{C} \rceil}$
+        \For{$c_i=c_1\dots c_{\lceil \frac{L}{C} \rceil}$}
+          \State $b_i \gets GenerateBlueprint(p_\theta, c_i)$
+          \State $Q \gets \{ExtractQuestions(p_\theta, b_i)\}$
+        \EndFor
+        \For{$q_i \in Q$}
+          \State $E \gets \{Encoder(q_i)\}$
+          \State $K \gets KMeans(E)$
+          \For{$k_i \in K$}
+            \State $q_i \gets Generalize(p_\theta, k_i)$
+            \State $Q \gets \{q_i\}$ \Comment{Собирается общий план}
+          \EndFor
+          \For{$c_i=c_1\dots c_{\lceil \frac{L}{C} \rceil}$}
+            \State $S_0 \gets \{SummarizeWithBp(p_\theta, b_i, c_i)\}$\
+          \EndFor
+        \EndFor
+        \State \textbf{Объединение рефератов} аналогично <<Чертежному методу>> с тем отличием что здесь в качестве чертежа используется один глобальный план Q
+      \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+
 Такой подход позволяет уменьшить число обращений к LLM, что позволяет ускорить скорость генераций, как будет показано в таблице \ref{tab:results_models}.
 
 % ====================== ROW 2: Blueprint ======================
-\noindent
-\begin{minipage}[t]{0.49\textwidth}
-\begin{algorithm}[H]
-\caption{Text-Blueprint: построение плана}
-\begin{algorithmic}[1]
-\Require $x, p_\theta, QGen, Ans, m$
-\State $Q \gets QGen(p_\theta,x,m)$ \Comment{ключевые вопросы}
-\State $B \gets [\, (q,\,Ans(p_\theta,x,q)) \mid q\in Q \,]$ \Comment{Q\&A-каркас}
-\State \Return $B$
-\end{algorithmic}
-\end{algorithm}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.49\textwidth}
-\begin{algorithm}[H]
-\caption{Text-Blueprint: генерация по плану}
-\begin{algorithmic}[1]
-\Require $B, p_\theta, G$
-\State \Return $G(p_\theta,B)$ \Comment{структурированная итоговая аннотация}
-\end{algorithmic}
-\end{algorithm}
-\end{minipage}
 
 
-\section*{Оценивание методов}
+\section*{Метрики}
 
 Для объективного сравнения описанных подходов и моделей в задаче реферирования художественных текстов использовались четыре группы метрик.
 
@@ -334,12 +363,12 @@ n_{\text{clusters}} = \max\!\left(2,\; \left\lceil \sqrt{N_{\text{questions}}} \
 \toprule
 \textbf{Модель} & \makecell{Иерархический} & \makecell{Иерархический\\с фильтрацией} & \makecell{Чертежный} & \makecell{Чертежный\\с кластеризацией} \\
 \midrule
-RuadaptQwen2.5-7B-Lite-Beta & 84.64 & 25.70 & 103.66 & 78.99 \\
-
-DeepSeek V3     & 237.83 & 72.42 & 292.80 & 268.75 \\
-Qwen3-235B-A22B & 113.24 & 39.45 & 215.63 & 145.20 \\
-tpro            & 472.23 & 127.38 & 421.65 & 185.94 \\
-yagpt5lite      & 34.17 & 14.08 & 99.70 & 27.26 \\
+RuadaptQwen2.5-7B-Lite-Beta  & 84.64 & 25.70 & 103.66 & 78.99 \\
+RuadaptQwen3-32BInstruct-v2 & 218.23 & 72.54 & 420.95 & 470.4 \\
+DeepSeek V3                  & 237.83 & 72.42 & 292.80 & 268.75 \\
+Qwen3-235B-A22B              & 113.24 & 39.45 & 215.63 & 145.20 \\
+tpro                         & 472.23 & 127.38 & 421.65 & 185.94 \\
+yagpt5lite                   & 34.17 & 14.08 & 99.70 & 27.26 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -358,7 +387,7 @@ Similarity, а также время генерации (среднее) на 10
 \caption{Результаты по методам и моделям}
 \label{tab:results_models}
 
-\begin{tabular}{llcccc}
+\begin{tabular}{ll|c|c|c|c}
 \toprule
 Модель & Метрики &
 \makecell{Иерархический} &
