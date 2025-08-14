@@ -46,14 +46,15 @@
 
 \title{Реферирование художественной литературы посредством больших языковых моделей}
 
-\author{Д.\,А.~Григорьев\Addressmark[1]\Emailmark[1], Д.\,И.~Чернышев\Addressmark[1]\Emailmark[2]}
+\author{Д.\,А.~Григорьев\Addressmark[1]\Emailmark[1], Д.\,В.~Худяков\Addressmark[1]\Emailmark[2], Д.\,И.~Чернышев\Addressmark[1]\Emailmark[3]}
 
 \Addresstext[1]{Московский государственный университет им.~М.\,В.~Ломоносова, Москва, Россия}
 
 \Emailtext[1]{dagrig14@yandex.ru}
-\Emailtext[2]{chdanorbis@yandex.ru}
+\Emailtext[2]{hydikovv17914@gmail.com}
+\Emailtext[3]{chdanorbis@yandex.ru}
 
-\markboth{Д.\,А.~Григорьев, Д.\,И.~Чернышев}{Оценка общих и специальных знаний в больших языковых моделях}
+\markboth{Д.\,А.~Григорьев, Д.\,В.~Худяков, Д.\,И.~Чернышев}{Оценка общих и специальных знаний в больших языковых моделях}
 
 \presentedby{Представлено кем-то}
 
@@ -63,7 +64,7 @@
 
 \alttitle{Evaluating general and special knowledge in large language models for Russian language through replication of encyclopedia articles}
 
-\altauthor{D.\,A.~Grigoriev\Addressmark[a]\Emailmark[1], D.\,I.~Chernyshev\Addressmark[a]\Emailmark[2]}
+\altauthor{D.\,A.~Grigoriev\Addressmark[a]\Emailmark[1], D.\,V.~Khudiakov\Addressmark[a]\Emailmark[2], D.\,I.~Chernyshev\Addressmark[a]\Emailmark[3]}
 
 \altAddresstext[a]{Lomonosov Moscow State University, Moscow Center for Fundamental and Applied Mathematics, \\ Moscow, Russian Federation}
 
@@ -121,8 +122,8 @@ Fables \cite{fables} - ручной корпус, предназначенный
 автоматически создавать краткие, содержательные и стилистически корректные рефераты к художественным текстам.
 Цель данной работы - предоставить подобные инструменты, с целью чего были решены следующие задачи:
 \begin{enumerate}
-  \item Был создан новый набор данных, включающий в себя художественные произведения и пересказы к ним;
-  \item Были протестированы новые методы реферирования текстов, предлагающие альтернативу существующим и существенно уменьшающих время, требующиеся для создания краткого пересказа книги.
+  \item Был создан новый набор данных для русского языка, включающий в себя художественные произведения и пересказы к ним;
+  \item Были предложены новые методы реферирования текстов, предлагающие альтернативу существующим и существенно уменьшающих время, требующиеся для создания краткого пересказа книги.
 \end{enumerate}
 
 % ================= НАБОР ДАННЫХ =================
@@ -353,11 +354,13 @@ R = \frac{1}{|R|}\sum_{u\in R}\max_{t\in S}\!\mathrm{sim}(e_u, e_t)\\
 В формулах  \eqref{precision}, \eqref{recall} и \eqref{f} \(S\) - эталонный текст, \(R\) - сгенерированный; каждое предложение кодируется эмбеддингом модели USER‑bge‑m3, 
 после чего вычисляется косинусное сходство.  
 
-\textbf{Полнота покрытия ключевых вопросов (Coverage)} — доля заранее сгенерированных по эталонному тексту вопросов, на которые модель «отвечает» в реферате:
+\textbf{Полнота покрытия ключевых вопросов (Coverage)} — доля заранее сгенерированных по эталонному тексту вопросов с помощью модели Qwen3-\allowbreak 235B-\allowbreak A22B \cite{qwen3},
+на которые модель «отвечает» в реферате:
 \begin{equation}\label{coverage}
   \text{Coverage} = \frac{\#\{q_i\colon P(\text{“да”}\mid q_i,S)\!>\!0.75\}}{N}
 \end{equation}
-В формуле \eqref{coverage} $N$ — общее число вопросов, а $P(\text{“да”}\mid q_i,S)$ — вероятность наличия ответа на вопрос $q_i$ в тексте $S$, оцененная LLM.
+В формуле \eqref{coverage} $N$ — общее число вопросов, а $P(\text{“да”}\mid q_i,S)$ — вероятность наличия ответа на вопрос $q_i$ в тексте $S$, 
+полученная с помощью LLM (Qwen3-\allowbreak 235B-\allowbreak A22B \cite{qwen3}).
 
 \textbf{Совпадение ответов (AnswerSimilarity)} — среднее семантическое сходство между сгенерированными ответами $a_i^{\text{pred}}$ и эталонными $a_i^{\text{ref}}$ на те же ключевые вопросы:
 \begin{equation}\label{sims}
@@ -636,6 +639,10 @@ Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summariz
 \textit{BERTScore.}
 BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. – 2000.
 
+\bibitem{qwen3}
+\textit{Qwen3-235B.}
+Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. – 2025.
+
 \bibitem{ruadapt}
 \textit{RuadaptQwen.}
 Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptation with learned embedding propagation //Journal of Language and Education. – 2024. – Т. 10. – №. 4 (40). – С. 130-145.
@@ -643,10 +650,6 @@ Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptatio
 \bibitem{deepseek}
 \textit{DeepSeek V3.}
 Liu A. et al. DeepSeek-V3 Technical Report //CoRR. – 2024.
-
-\bibitem{qwen3}
-\textit{Qwen3-235B.}
-Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. – 2025.
 
 \bibitem{tpro}
 \textit{Т-Банк.}
@@ -686,7 +689,7 @@ FABLES: Evaluating faithfulness and content selection in book-length summarizati
 Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
 
 \bibitem{blueprint_e}
-Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
+Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. \\// Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
 System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
 //aclanthology.org/2023.eacl-demo.13/.
 
@@ -698,6 +701,10 @@ Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summariz
 \textit{BERTScore.}
 BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. – 2000.
 
+\bibitem{qwen3_e}
+\textit{Qwen3-235B.}
+Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. – 2025.
+
 \bibitem{ruadapt_e}
 \textit{RuadaptQwen.}
 Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptation with learned embedding propagation //Journal of Language and Education. – 2024. – Т. 10. – №. 4 (40). – С. 130-145.
@@ -705,10 +712,6 @@ Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptatio
 \bibitem{deepseek_e}
 \textit{DeepSeek V3.}
 Liu A. et al. DeepSeek-V3 Technical Report //CoRR. – 2024.
-
-\bibitem{qwen3_e}
-\textit{Qwen3-235B.}
-Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. – 2025.
 
 \bibitem{tpro_e}
 \textit{Т-Банк.}

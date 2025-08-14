@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.7.29)  14 AUG 2025 15:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.7.29)  14 AUG 2025 15:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -775,14 +775,14 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 <figures/genres_pie.png, id=45, 521.0667pt x 317.988pt>
 File: figures/genres_pie.png Graphic file (type png)
 <use figures/genres_pie.png>
-Package pdftex.def Info: figures/genres_pie.png  used on input line 149.
+Package pdftex.def Info: figures/genres_pie.png  used on input line 150.
 (pdftex.def)             Requested size: 375.57779pt x 229.19862pt.
 
 
 Package babel Info: 'russian' activates 'russian' shorthands.
-(babel)             Reported on input line 173.
+(babel)             Reported on input line 174.
 [2 <./figures/genres_pie.png>]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 205.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 206.
 
 
 [3]
@@ -790,7 +790,7 @@ Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on inp
 [4]
 
 [5]
-LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 379.
+LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 382.
  (C:\Users\dagri\AppData\Local\Programs\MiKTeX\tex/latex/cyrillic\t2acmtt.fd
 File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 )
@@ -802,54 +802,49 @@ File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 [8]
 
 [9]
-Underfull \hbox (badness 1014) in paragraph at lines 627--630
+Underfull \hbox (badness 1014) in paragraph at lines 630--633
 \T2A/cmr/m/n/9 ^^V Dubrovnik, Croatia: Association for Computational Linguistics, 2023. ^^V . ^^V Pp. 105^^U116. https:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 652--655
+Underfull \hbox (badness 10000) in paragraph at lines 655--658
 []\T2A/cmr/m/it/9 Т-Банк. \T2A/cmr/m/n/9 Т-Банк от-крыл до-ступ к соб-ствен-ной рус-ско-языч-ной язы-ко-вой
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 652--655
+Underfull \hbox (badness 10000) in paragraph at lines 655--658
 \T2A/cmr/m/n/9 мо-де-ли в ве-со-вой ка-те-го-рии 7^^V8 млрд па-ра-мет-ров // Т-Банк URL:
  []
 
 
-Overfull \hbox (163.64445pt too wide) in paragraph at lines 652--655
+Overfull \hbox (163.64445pt too wide) in paragraph at lines 655--658
 \T2A/cmr/m/n/9 https://www.tbank.ru/about/news/20072024-t-bank-opened-access-its-own-russian-language-language-model-weight-category-of-7-8-billion-parameters/
  []
 
 
-Overfull \hbox (16.88414pt too wide) in paragraph at lines 657--659
+Overfull \hbox (16.88414pt too wide) in paragraph at lines 660--662
 []\T2A/cmr/m/it/9 Yandex. \T2A/cmr/m/n/9 YandexGPT 5 с ре-жи-мом рас-суж-де-ний // Ян-декс URL: https://ya.ru/ai/gpt?ysclid=mal9jrssc8906806775
- []
-
-
-Underfull \hbox (badness 1014) in paragraph at lines 689--692
-\T2A/cmr/m/n/9 ^^V Dubrovnik, Croatia: Association for Computational Linguistics, 2023. ^^V . ^^V Pp. 105^^U116. https:
  []
 
 
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 714--717
+Underfull \hbox (badness 10000) in paragraph at lines 717--720
 []\T2A/cmr/m/it/9 Т-Банк. \T2A/cmr/m/n/9 Т-Банк от-крыл до-ступ к соб-ствен-ной рус-ско-языч-ной язы-ко-вой
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 714--717
+Underfull \hbox (badness 10000) in paragraph at lines 717--720
 \T2A/cmr/m/n/9 мо-де-ли в ве-со-вой ка-те-го-рии 7^^V8 млрд па-ра-мет-ров // Т-Банк URL:
  []
 
 
-Overfull \hbox (163.64445pt too wide) in paragraph at lines 714--717
+Overfull \hbox (163.64445pt too wide) in paragraph at lines 717--720
 \T2A/cmr/m/n/9 https://www.tbank.ru/about/news/20072024-t-bank-opened-access-its-own-russian-language-language-model-weight-category-of-7-8-billion-parameters/
  []
 
 
-Overfull \hbox (16.88414pt too wide) in paragraph at lines 719--721
+Overfull \hbox (16.88414pt too wide) in paragraph at lines 722--724
 []\T2A/cmr/m/it/9 Yandex. \T2A/cmr/m/n/9 YandexGPT 5 с ре-жи-мом рас-суж-де-ний // Ян-декс URL: https://ya.ru/ai/gpt?ysclid=mal9jrssc8906806775
  []
 
@@ -872,9 +867,9 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  75i,18n,79p,599b,618s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lati0800.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1200.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\latt0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcbx0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\latt1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lasl1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm0600.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm0700.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lati0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcbx1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lacc0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1440.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm0800.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx0800.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lasl0800.pk><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on main.pdf (11 pages, 542072 bytes).
+Output written on main.pdf (11 pages, 545639 bytes).
 PDF statistics:
- 1125 PDF objects out of 1200 (max. 8388607)
+ 1135 PDF objects out of 1200 (max. 8388607)
  74 named destinations out of 1000 (max. 500000)
  22 words of extra memory for PDF output out of 10000 (max. 10000000)
 
