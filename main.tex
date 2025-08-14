@@ -132,9 +132,10 @@ Fables \cite{fables} - ручной корпус, предназначенный
 С целью проведения экспериментов и оценки различных подходов к генерации рефератов был создан собственный корпус, состоящий из художественных текстов и соответствующих кратких пересказов. 
 В качестве источника рефератов был выбран ресурс «Народный Брифли»~\cite{Briefly} — платформа, где пользователи публикуют краткие пересказы литературных произведений. 
 
-Пересказы представляют собой краткие тексты, созданные пользователями на основе исходных материалов художественного произведения. Они варьируются по объему - от нескольких предложений,
-до нескольких абзацев и стилю - некоторые пересказы дословно воспроизводят ключевые фразы произведения, в то время как другие используют более свободную форму изложения. 
-Как правило, содержат основные факты и выводы, следующие из исходного текста.
+Пересказы представляют произвольные тексты, созданные пользователями на основе исходных материалов художественного произведения. Они варьируются по объему - от нескольких предложений,
+до нескольких абзацев и стилю - некоторые пересказы дословно воспроизводят ключевые фразы произведения, в то время как другие используют более свободную форму изложения. Некоторые
+охватывают все произведение целиком, тогда как другие делят содержание на отдельные главы. 
+Как правило, содержат основные факты и выводы, следующие из исходного текста, но могут содержать комментарии автора пересказа.
 
 Художественные тексты были отобраны из электронной библиотеки LibRuSec \cite{librusec} — одного из крупнейших русскоязычных ресурсов художественной литературы. 
 Отбор произведений осуществлялся на основании наличия реферата на выбранном ресурсе \cite{Briefly}. Каждый текст проходил автоматическую предварительную обработку: удалялась метаинформация (например, заголовки, описания глав и технические вставки), 
@@ -156,12 +157,12 @@ Fables \cite{fables} - ручной корпус, предназначенный
 \label{tab:dataset_info}
 \begin{tabular}{l|cccc}
 \toprule
-\textbf{Датасет} & \makecell{Число документов} & \makecell{Средняя длина \\ документа \\ (\# слов)} & \makecell{Средняя длина \\ реферата \\ (\# слов)} & \makecell{Степень сжатия \\ (длина текста \\/ длина реферата)} \\
+\textbf{Датасет} & \makecell{Число документов} & \makecell{Средняя длина \\ документа \\ (\# слов)} & \makecell{Средняя длина \\ реферата \\ (\# слов)} & \makecell{Степень сжатия \\ (длина реферата \\/ длина текста)} \\
 \midrule
-\textbf{RuBookSum}  & 634 & 35052.64 & 700.77 & 0.0843 \\
+\textbf{RuBookSum}  & 634 & 35052.64 & 700.77 & 8.43\% \\
 \hline
-BookSum    & 405 & 112885.15 & 1167.20 & 0.0079 \\
-Gazeta     & 60964 & 632.77 & 41.94 & 0.0699 \\
+BookSum    & 405 & 112885.15 & 1167.20 & 0.79\% \\
+Gazeta     & 60964 & 632.77 & 41.94 & 6.99\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -170,11 +171,12 @@ Gazeta     & 60964 & 632.77 & 41.94 & 0.0699 \\
 Затем производился поиск по датасету LibRuSec и собиралась коллекция, состоящая из пар "текст книги - реферат".
 \\Получившийся корпус включает в себя:
 \begin{itemize}
-  \item более 600 пользовательских пересказов с ресурса «Народный Брифли» \cite{Briefly};
+  \item более 600 очищенных пользовательских пересказов с ресурса «Народный Брифли» \cite{Briefly};
+  \item более 40 различных жанров;
   \item исходные произведения из электронной библиотеки LibRuSec \cite{librusec}.
 \end{itemize}
 
-На рисунке \ref{fig:genres} показано жанровое разнообразие текстов. В таблице \ref{tab:dataset_info} приведена общая информация о датасете в сравнении с аналогами.
+На рисунке \ref{fig:genres} показано распределение жанров текстов в коллекции. В таблице \ref{tab:dataset_info} приведена общая информация о датасете в сравнении с аналогами.
 
 % ================= МЕТОДОЛОГИЯ =================
 \section*{Методология}
@@ -258,7 +260,7 @@ Gazeta     & 60964 & 632.77 & 41.94 & 0.0699 \\
 \subsubsection*{«Чертёжный» метод с кластеризацией вопросов. (Algorithm 4)}
 Базовая реализация «чертёжного» метода предполагает генерацию вопросно-ответного
 плана для каждого фрагмента текста и каждого уровня объединения рефератов. Однако при работе с художественными текстами вопросы, генерируемые для каждого чанка,
-могут сбивать агрегацию текста моделью, делая реферат менее структурированным
+могут пересекаться и порождать противоречивые ответы,  то в свою очередь сбивает агрегацию текста моделью, делая реферат менее структурированным
 и содержательно полным. К тому же, генерация плана на каждом шаге алгоритма существенно замедляет его работу и использует дополнительные мощности языковых моделей.
 Для снижения числа запросов к модели и повышения структурности, была добавлена кластеризация вопросов с использованием SentenceTransformers и алгоритма K-means.
 
@@ -396,6 +398,17 @@ R = \frac{1}{|R|}\sum_{u\in R}\max_{t\in S}\!\mathrm{sim}(e_u, e_t)\\
 % ================= РЕЗУЛЬТАТЫ =================
 
 \section*{Результаты}
+
+\subsection*{Используемые модели}
+
+В экспериментах использовались следующие большие языковые модели: 
+RuadaptQwen2.5-\allowbreak 7B-\allowbreak Lite-\allowbreak Beta \cite{ruadapt}, 
+RuadaptQwen3-\allowbreak 32BInstruct-v2 \cite{ruadapt}, 
+DeepSeek V3 \cite{deepseek}, 
+Qwen3-\allowbreak 235B-\allowbreak A22B \cite{qwen3}, 
+tpro \cite{tpro} и yagpt5lite \cite{yagpt}.
+
+
 \subsection*{Замеры времени.}
 Проводились первоначальные замеры скорости работы методов на небольших текстах, полученные результаты в секундах (среднее по трём запускам) представлены в таблице \ref{tab:timing}. 
 Результаты подтверждают, что модификации позволяют повысить скорость генерации.
@@ -417,12 +430,6 @@ yagpt5lite                   & 34.17 & 14.08 & 99.70 & 27.26 \\
 \end{tabular}
 \end{table}
 
-\subsection*{Полученные результаты.}
-В таблице \ref{tab:results_models} представлены сравнительные метрики качества автоматического пересказа книг разными моделями и методами обработки. Для каждой комбинации модели и метода измерялись BERTScore, ROUGEL, Answer Coverage и 
-Similarity, а также время генерации (среднее) на 100 примерах, одинаковых для всех замеров. Лучше всего себя показала модель Qwen3-\allowbreak 235B-\allowbreak A22B: она продемонстрировала самые высокие показатели в покрытие вопросов и сходстве ответов.
-В то же время важно отметить, что среди всех методов лучшим образом в соотношение качество и время обработки себя показывает иерархический метод с фильтрацией узлов. Он позволяет существенно ускорить время обработки (например, почти в два раза для модели DeepSeek V3), и по сравнению с 
-чертежным методом, который в среднем показывал лучшие результаты, не сильно отстает по показателям. Исключением стала лишь модель Qwen3-\allowbreak 235B-\allowbreak A22B, так как она показала лучший результат среди всех моделей на базовом чертежном методе.
-Эксперименты показали, что иерархический метод с фильтрацией узлов обеспечивает наилучший компромисс между скоростью и качеством генерации.
 
 \begin{table}[ht!]
 \centering
@@ -484,6 +491,12 @@ Similarity, а также время генерации (среднее) на 10
 \end{tabular}
 \end{table}
 
+\subsection*{Полученные результаты.}
+В таблице \ref{tab:results_models} представлены сравнительные метрики качества автоматического пересказа книг разными моделями и методами обработки. Для каждой комбинации модели и метода измерялись BERTScore, ROUGEL, Answer Coverage и 
+Similarity, а также время генерации (среднее) на 100 примерах, одинаковых для всех замеров. Лучше всего себя показала модель Qwen3-\allowbreak 235B-\allowbreak A22B: она продемонстрировала самые высокие показатели в покрытие вопросов и сходстве ответов.
+В то же время важно отметить, что среди всех методов лучшим образом в соотношение качество и время обработки себя показывает иерархический метод с фильтрацией узлов. Он позволяет существенно ускорить время обработки (например, почти в два раза для модели DeepSeek V3), и по сравнению с 
+чертежным методом, который в среднем показывал лучшие результаты, не сильно отстает по показателям. Исключением стала лишь модель Qwen3-\allowbreak 235B-\allowbreak A22B, так как она показала лучший результат среди всех моделей на базовом чертежном методе.
+Эксперименты показали, что иерархический метод с фильтрацией узлов обеспечивает наилучший компромисс между скоростью и качеством генерации.
 
 \subsection*{Анализ и сравнение результатов.}
 Разброс значений метрики QA можно проиллюстрировать на примере работы одной и той же модели (DeepSeek V3) в рамках иерархического метода.
@@ -607,12 +620,10 @@ FABLES: Evaluating faithfulness and content selection in book-length summarizati
 Библиотека художественных произведений.  
 \url{https://librusec.org//} (дата обращения: 30.07.2025).
 
-\bibitem{hierarchical}
-\textit{Иерархический метод.}  
+\bibitem{hierarchical} 
 Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
 
-\bibitem{blueprint}
-\textit{Чертежный метод.}  
+\bibitem{blueprint} 
 Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
 System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
 //aclanthology.org/2023.eacl-demo.13/.
@@ -624,6 +635,27 @@ Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summariz
 \bibitem{bertscore}
 \textit{BERTScore.}
 BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. – 2000.
+
+\bibitem{ruadapt}
+\textit{RuadaptQwen.}
+Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptation with learned embedding propagation //Journal of Language and Education. – 2024. – Т. 10. – №. 4 (40). – С. 130-145.
+
+\bibitem{deepseek}
+\textit{DeepSeek V3.}
+Liu A. et al. DeepSeek-V3 Technical Report //CoRR. – 2024.
+
+\bibitem{qwen3}
+\textit{Qwen3-235B.}
+Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. – 2025.
+
+\bibitem{tpro}
+\textit{Т-Банк.}
+Т-Банк открыл доступ к собственной русскоязычной языковой модели в весовой категории 7—8 млрд параметров 
+// Т-Банк URL: https://www.tbank.ru/about/news/20072024-t-bank-opened-access-its-own-russian-language-language-model-weight-category-of-7-8-billion-parameters/ (дата обращения: 10.05.2025).
+
+\bibitem{yagpt}
+\textit{Yandex.}
+YandexGPT 5 с режимом рассуждений // Яндекс URL: https://ya.ru/ai/gpt?ysclid=mal9jrssc8906806775 (дата обращения: 30.07.2025).
 
 \end{thebibliography}
 
@@ -651,11 +683,9 @@ FABLES: Evaluating faithfulness and content selection in book-length summarizati
 \url{https://librusec.org//} (дата обращения: 30.07.2025).
 
 \bibitem{hierarchical_e}
-\textit{Иерархический метод.}  
 Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
 
 \bibitem{blueprint_e}
-\textit{Чертежный метод.}  
 Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
 System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
 //aclanthology.org/2023.eacl-demo.13/.
@@ -668,6 +698,26 @@ Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summariz
 \textit{BERTScore.}
 BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. – 2000.
 
+\bibitem{ruadapt_e}
+\textit{RuadaptQwen.}
+Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptation with learned embedding propagation //Journal of Language and Education. – 2024. – Т. 10. – №. 4 (40). – С. 130-145.
+
+\bibitem{deepseek_e}
+\textit{DeepSeek V3.}
+Liu A. et al. DeepSeek-V3 Technical Report //CoRR. – 2024.
+
+\bibitem{qwen3_e}
+\textit{Qwen3-235B.}
+Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. – 2025.
+
+\bibitem{tpro_e}
+\textit{Т-Банк.}
+Т-Банк открыл доступ к собственной русскоязычной языковой модели в весовой категории 7—8 млрд параметров 
+// Т-Банк URL: https://www.tbank.ru/about/news/20072024-t-bank-opened-access-its-own-russian-language-language-model-weight-category-of-7-8-billion-parameters/ (дата обращения: 10.05.2025).
+
+\bibitem{yagpt_e}
+\textit{Yandex.}
+YandexGPT 5 с режимом рассуждений // Яндекс URL: https://ya.ru/ai/gpt?ysclid=mal9jrssc8906806775 (дата обращения: 30.07.2025).
 \end{thebibliography}
 
 \end{document}
