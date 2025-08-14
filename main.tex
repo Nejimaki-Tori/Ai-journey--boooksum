@@ -505,7 +505,7 @@ Similarity, а также время генерации (среднее) на 10
 Разброс значений метрики QA можно проиллюстрировать на примере работы одной и той же модели (DeepSeek V3) в рамках иерархического метода.
 В качестве иллюстрации взяты два реферата к произведениям <<И грянул гром>> и <<Кастрюк>>. 
 В первом случае модель получила высокий результат, ответив на все, кроме одного вопроса; во втором
-реферате содержались ответы только на два вопроса из одиннадцати, что привело к низкому показателю. В таблице \ref{tab:annotations} показаны два реферата. 
+реферате содержались ответы только на два вопроса из одиннадцати, что привело к низкому показателю. В примере \ref{fig:refs} показаны два реферата. 
 Для краткости в них выделены только основные моменты, которые
 повлияли на итоговую метрику. 
 Сравнение показывает возможную причину столь значительного расхождения: реферат к рассказу <<Кастрюк>> содержит большое количество лирических отступлений и художественных деталей,
@@ -513,72 +513,26 @@ Similarity, а также время генерации (среднее) на 10
 тогда как в "И грянул гром" события изложены последовательно и структурировано, 
 а основные элементы сюжета чётко перечислены, что существенно упрощает задачу поиска важной информации.
 В текстах выделены жирным шрифтом фрагменты, которые несут в себе важную сюжетную информацию, а подчеркнутый текст - то, что можно было бы опустить.
-\begin{table}[ht!]
-\centering
-\begin{tabular}{|p{0.15\linewidth}|p{0.75\linewidth}|}
-\hline
-\makecell{\textbf{Название}} & \makecell{\textbf{Текст}} \\ \hline
 
-\makecell{\textbf{И грянул} \\ \textbf{гром}} & \dots
-\textbf{Главный герой, Экельс}, азартный и самоуверенный охотник, \textbf{платит} огромную сумму \textbf{за возможность отправиться на 60 миллионов лет назад, чтобы убить тираннозавра}. 
-Перед путешествием гид Тревис строго предупреждает его о правилах: \textbf{ни в коем случае нельзя сходить с антигравитационной Тропы} или вмешиваться в естественный ход событий, 
-так как малейшее нарушение может катастрофически изменить будущее.\dots Тревис объясняет \textbf{хрупкость временного баланса: 
-даже гибель одной мыши способна уничтожить целые виды}, а значит, и изменить историю человечества. \textbf{Группа выслеживает тираннозавра}, помеченного красной краской — это знак, 
-что \textbf{его убийство не повлияет на будущее}. Однако при виде гигантского хищника \textbf{Экельс впадает в панику, сходит с Тропы и случайно раздавливает бабочку}\dots 
-По возвращении в 2055 \dots \textbf{мир изменился до неузнаваемости: язык стал грубым, атмосфера — тяжёлой, а вместо умеренного президента Кейта у власти стоит жестокий диктатор Дойчер.} 
-Экельс осознаёт, что \textbf{его неосторожность спровоцировала «эффект бабочки»} — раздавленное насекомое вызвало цепь событий, исказивших историю. 
-В отчаянии он умоляет исправить ошибку, но \textbf{Тревис, понимая необратимость последствий, поднимает ружьё.} \dots
- \\ \hline
-
-\textbf{Кастрюк} & \dots \uline{Действие рассказа разворачивается в русской деревне ранней весной, 
-где природа пробуждается, но жизнь людей остаётся тяжёлой и однообразной.} \textbf{Главный герой — старик Семён, прозванный Кастрюком}, — 
-доживает свои дни в одиночестве, \textbf{терзаемый воспоминаниями о былой силе} и сожалениями о нынешней немощности. \textbf{Когда-то он славился как лучший работник в округе}, 
-\uline{но теперь, дряхлый и забытый, вынужден оставаться в стороне, пока односельчане трудятся в поле}. Его единственная отрада — внучка Дашка, добрая и впечатлительная девочка, 
-\uline{которая прибегает к нему, испугавшись барчуков из соседнего имения Залесное. Кастрюк успокаивает её, и они вместе отправляются за деревню, где старик, любуясь весенней природой, 
-пытается отвлечься от гнетущих мыслей}. \dots
-\textbf{Лишь к вечеру, уговорив сына отпустить его в ночное (пасти лошадей), Кастрюк обретает краткую радость}. \uline{На свободе, среди ребятишек и под звёздным небом, он чувствует себя почти молодым. 
-У пруда кобыла пьёт воду, отражая закат,} а сам \textbf{старик, глядя на Млечный Путь, шепчет молитву — будто вновь обретает связь с миром и утраченную гармонию}. 
-\uline{Но это лишь мимолётное утешение: завтра его снова ждёт беспросветное одиночество и осознание собственной ненужности.} \dots
-  \\ \hline
-
-\end{tabular}
-\caption{Сравнение лучшего и худшего сгенерированного реферата}
-\label{tab:annotations}
-\end{table}
-
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/two_ref.png}
+  \caption{Сравнение лучшего и худшего сгенерированного реферата}
+  \label{fig:refs}
+\end{figure}
 
 Переходя к сравнению между моделями, можно отметить, что в целом DeepSeek V3 показывает лучшие показатели, чем модели меньшей категории, однако, если сравнивать чертежный метод, то в 30\% случаев модель 
 RuadaptQwen3-\allowbreak 32B-\allowbreak Instruct-\allowbreak v2 показывает лучшие результаты, а tpro в 43\%. Для сравнения можно взять реферат по произведению <<И грянул гром>>, созданную с использованием чертежного метода, 
-небольшие вырезки которой приведены в таблице \ref{tab:annotations_deepseek_vs_others}.
+небольшие вырезки которой приведены в примере \ref{fig:bl_ref}.
 В то время как реферат, созданный моделью DeepSeek V3 больше похожа на перечесление основных событий через нумерованный список,
 текст у моделей RuadaptQwen3-\allowbreak 32B-\allowbreak Instruct-\allowbreak v2 и tpro является связным пересказом текста, раскрывающим все основные события сюжета.
 
-\begin{table}[htbp!]
-\centering
-\begin{tabular}{|p{0.15\linewidth}|p{0.75\linewidth}|}
-\hline
-\makecell{\textbf{Модель}} & \makecell{\textbf{Текст}} \\ \hline
-
-\makecell{RuadaptQwen3} & "Компания «Сафари во Времени» организует платные экскурсии в прошлое для охоты на динозавров, 
-используя машины времени, способные перемещаться между эпохами.  
-Клиенты обязаны соблюдать строгие правила: следовать по металлической тропе\dots
- \\ \hline
-
-\makecell{tpro} & "В тексте главный герой, Экельс, отправляется на сафари во времени с целью убить динозавра Tyrannosaurus rex. 
-Компания, организующая сафари, гарантирует только динозавров и строго запрещает охотникам сходить 
-с Тропы \dots
-Мистер Тревис, проводник сафари, объясняет, что даже уничтожение одной мыши может привести к исчезновению всех её потомков \dots
- \\ \hline
-
-\makecell{DeepSeek V3} & "**Краткое содержание по плану:** 1. **Экельс** — охотник \dots
- 2. **Компания «Сафари во времени»** организует охоту в прошлом \dots
- 3. **Тревис** — проводник, контролирующий экспедицию. \dots
-  \\ \hline
-
-\end{tabular}
-\caption{Сравнение моделей при генерации рефератов по чертежному методу}
-\label{tab:annotations_deepseek_vs_others}
-\end{table}
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/three_ref.png}
+  \caption{Сравнение моделей при генерации рефератов по чертежному методу}
+  \label{fig:bl_ref}
+\end{figure}
 
 Следует отметить, что лучшего результата удалось добиться именно чертежным методом с помощью большой модели Qwen3-\allowbreak 235B-\allowbreak A22B, 
 как было показано в таблице \ref{tab:results_models}. Для сравнения качества рефератов можно взять рассказ <<Барбос и Жулька>> - в иерархическом методе
@@ -599,8 +553,6 @@ Qwen3-\allowbreak 235B-\allowbreak A22B.
 Однако для некоторых типов текстов и методов (например, базовый чертёжный) более компактные модели, такие как RuadaptQwen3-\allowbreak 32B-\allowbreak Instruct-\allowbreak v2, 
 могут демонстрировать конкурентоспособное качество при меньших вычислительных затратах. 
 Таким образом, выбор модели следует определять исходя из баланса между доступными ресурсами, требованиями к качеству и характером обрабатываемых текстов.
-
-
 
 % ================= ЛИТЕРАТУРА =================
 
@@ -627,7 +579,7 @@ FABLES: Evaluating faithfulness and content selection in book-length summarizati
 Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
 
 \bibitem{blueprint} 
-Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
+Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / \\Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
 System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
 //aclanthology.org/2023.eacl-demo.13/.
 
@@ -652,75 +604,11 @@ Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptatio
 Liu A. et al. DeepSeek-V3 Technical Report //CoRR. – 2024.
 
 \bibitem{tpro}
-\textit{Т-Банк.}
-Т-Банк открыл доступ к собственной русскоязычной языковой модели в весовой категории 7—8 млрд параметров 
-// Т-Банк URL: https://www.tbank.ru/about/news/20072024-t-bank-opened-access-its-own-russian-language-language-model-weight-category-of-7-8-billion-parameters/ (дата обращения: 10.05.2025).
+Т-Банк открыл доступ к собственной русскоязычной языковой модели в весовой категории 7—8 млрд параметров\\ Т-Банк URL: https://www.tbank.ru/about/news/20072024-t-bank-opened-access-its-own-russian-\\language-language-model-weight-category-of-7-8-billion-parameters/ (дата обращения: 10.05.2025).
 
 \bibitem{yagpt}
-\textit{Yandex.}
 YandexGPT 5 с режимом рассуждений // Яндекс URL: https://ya.ru/ai/gpt?ysclid=mal9jrssc8906806775 (дата обращения: 30.07.2025).
 
-\end{thebibliography}
-
-\renewcommand\refname{References}
-
-
-\begin{thebibliography}{99}
-\bibitem{BookSum_e}
-\textit{BookSum.}  
-BOOKSUM: A Collection of Datasets for Long-form Narrative Summarization / Wojciech Kryscinski, Nazneen Rajani, Divyansh Agarwal et al. // Findings of the Association for Computational Linguistics: EMNLP 2022 / Ed. by Yoav Goldberg, Zornitsa Kozareva, Yue Zhang. — Abu Dhabi, United Arab Emirates: Association for Computational Linguistics, 2022. — . — Pp. 6536–6558. https://aclanthology.org/2022.findings-emnlp.488/.
-
-\bibitem{alexandria_e}
-Echoes from Alexandria: A Large Resource for Multilingual Book Summarization / Alessandro Scir`e, Simone Conia, Simone Ciciliano, Roberto Navigli // Findings of the Association for Computational Linguistics: ACL 2023 / Ed. by Anna Rogers, Jordan Boyd-Graber, Naoaki Okazaki. — Toronto, Canada: Association for Computational Linguistics, 2023. — . — Pp. 853–867. https://aclanthology.org/2023.findings-acl.54/.
-
-\bibitem{fables_e} 
-FABLES: Evaluating faithfulness and content selection in book-length summarization \\/ Yekyung Kim, Yapei Chang, Marzena Karpinska et al. // First Conference on Language Modeling. — 2024. https://openreview.net/forum?id=YfHxQSoaWU.
-
-\bibitem{Briefly_e}
-\textit{Народный Брифли.}  
-Электронная библиотека кратких пересказов литературных произведений.  
-\url{https://wiki.briefly.ru/} (дата обращения: 30.07.2025).
-
-\bibitem{librusec_e}
-Библиотека художественных произведений.  
-\url{https://librusec.org//} (дата обращения: 30.07.2025).
-
-\bibitem{hierarchical_e}
-Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
-
-\bibitem{blueprint_e}
-Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. \\// Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
-System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
-//aclanthology.org/2023.eacl-demo.13/.
-
-\bibitem{rouge_e}
-\textit{ROUGE.}
-Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summarization branches out. – 2004. – С. 74-81.
-
-\bibitem{bertscore_e}
-\textit{BERTScore.}
-BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. – 2000.
-
-\bibitem{qwen3_e}
-\textit{Qwen3-235B.}
-Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. – 2025.
-
-\bibitem{ruadapt_e}
-\textit{RuadaptQwen.}
-Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptation with learned embedding propagation //Journal of Language and Education. – 2024. – Т. 10. – №. 4 (40). – С. 130-145.
-
-\bibitem{deepseek_e}
-\textit{DeepSeek V3.}
-Liu A. et al. DeepSeek-V3 Technical Report //CoRR. – 2024.
-
-\bibitem{tpro_e}
-\textit{Т-Банк.}
-Т-Банк открыл доступ к собственной русскоязычной языковой модели в весовой категории 7—8 млрд параметров 
-// Т-Банк URL: https://www.tbank.ru/about/news/20072024-t-bank-opened-access-its-own-russian-language-language-model-weight-category-of-7-8-billion-parameters/ (дата обращения: 10.05.2025).
-
-\bibitem{yagpt_e}
-\textit{Yandex.}
-YandexGPT 5 с режимом рассуждений // Яндекс URL: https://ya.ru/ai/gpt?ysclid=mal9jrssc8906806775 (дата обращения: 30.07.2025).
 \end{thebibliography}
 
 \end{document}
