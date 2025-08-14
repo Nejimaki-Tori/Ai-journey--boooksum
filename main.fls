@@ -237,7 +237,6 @@ INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\sym
 INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm7.tfm
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\public\rsfs\rsfs10.tfm
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\public\rsfs\rsfs7.tfm
-INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcrm1000.tfm
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\map\pdftex\pdftex.map
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\lh\lh-t2a\larm0700.tfm
 INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr8.tfm
@@ -255,6 +254,7 @@ INPUT .\figures\genres_pie.png
 INPUT .\figures\genres_pie.png
 INPUT .\figures\genres_pie.png
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\lh\lh-t2a\larm0600.tfm
+INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcrm1000.tfm
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\lh\lh-t2a\lasl1000.tfm
 INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx10.tfm
 INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx7.tfm
@@ -290,10 +290,10 @@ INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\latt1
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\latt1000.pk
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\lasl1000.pk
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\lasl1000.pk
-INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\larm0600.pk
-INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\larm0600.pk
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
+INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\larm0600.pk
+INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\larm0600.pk
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\larm0700.pk
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\larm0700.pk
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\pk\ljfour\lh\lh-t2a\dpi600\larm1000.pk
