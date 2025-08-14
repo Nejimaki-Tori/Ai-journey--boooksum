@@ -282,10 +282,10 @@ INPUT .\figures\three_ref.png
 INPUT .\figures\three_ref.png
 INPUT .\figures\three_ref.png
 INPUT .\figures\three_ref.png
+INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx8.tfm
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\lh\lh-t2a\latt0900.tfm
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\lh\lh-t2a\larm1200.tfm
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\lh\lh-t2a\labx1200.tfm
-INPUT C:\Users\dagri\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx8.tfm
 INPUT C:\Users\dagri\AppData\Local\MiKTeX\fonts\tfm\lh\lh-t2a\lati0800.tfm
 INPUT main.aux
 INPUT .\main.out
