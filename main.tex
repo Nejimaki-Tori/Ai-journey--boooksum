@@ -119,7 +119,7 @@ Fables \cite{fables} - ручной корпус, предназначенный
 
 Актуальность темы обусловлена растущей потребностью в инструментах, способных
 автоматически создавать краткие, содержательные и стилистически корректные рефераты к художественным текстам.
-Цель данной работы - предоставить подобные интсрументы, с целью чего были решены следующие задачи:
+Цель данной работы - предоставить подобные инструменты, с целью чего были решены следующие задачи:
 \begin{itemize}
   \item был создан новый набор данных, включающий в себя художественные произведения и пересказы к ним;
   \item были протестированы новые методы реферирования текстов, предлагающие альтернативу существующим и существенно уменьшающих время, требующиеся для создания краткого пересказа книги.
@@ -249,7 +249,7 @@ Gazeta     & 60964 & 632.77 & 41.94 & 0.0699 \\
 \subsubsection*{«Чертёжный» метод (Text‑Blueprint). (Algorithm 3)}
 Данный метод \cite{blueprint} по сути является модификацией иерархического и ориентирован на построение промежуточного
 плана реферата перед генерацией текста. 
-План формируется в виде набора вопросноответных пар, что повышает управляемость генерации и обеспечивает структурированность результата.
+План формируется в виде набора вопросно-ответных пар, что повышает управляемость генерации и обеспечивает структурированность результата.
 Сначала модель формирует список вопросов, отражающих ключевые события, темы
 и персонажей текста. Далее к каждому вопросу автоматически подбирается краткий
 ответ. Эта структура служит планом, по которому генерируется итоговый реферат.
@@ -323,33 +323,45 @@ Gazeta     & 60964 & 632.77 & 41.94 & 0.0699 \\
 
 Для объективного сравнения описанных подходов и моделей в задаче реферирования художественных текстов использовались четыре группы метрик.
 
-\textbf{ROUGE-L} — основана на длине наибольшей общей подпоследовательности (LCS) между сгенерированным рефератом $S$ и эталонным $R$:
-    \[
-      \text{Precision} = \frac{\mathrm{LCS}(S,R)}{|S|},\quad
-      \text{Recall} = \frac{\mathrm{LCS}(S,R)}{|R|},
-    \]
-    \[
-      \text{ROUGE‑L} = \frac{2\;\text{Precision}\;\cdot\;\text{Recall}}{\text{Precision} + \text{Recall}}.
-    \]
-\\ \textbf{BERTScore} — семантическое качество на уровне токенов. Для каждой пары токенов предсказания и эталона вычисляется косинусное сходство их эмбеддингов в модели USER‑bge‑m3. Затем:
-    \[
-      P = \frac{1}{|S|}\sum_{t\in S}\max_{u\in R}\!\mathrm{sim}(e_t, e_u),\quad
-      R = \frac{1}{|R|}\sum_{u\in R}\max_{t\in S}\!\mathrm{sim}(e_u, e_t),
-    \]
-    \[
-      \text{BERTScore} = \frac{2\,P\,R}{P+R}.
-    \]
-\\ \textbf{Полнота покрытия ключевых вопросов (Coverage)} — доля заранее сгенерированных по эталонному тексту вопросов, на которые модель «отвечает» в реферате:
-    \[
-      \text{Coverage} = \frac{\#\{q_i\colon P(\text{“да”}\mid q_i,S)\!>\!0.75\}}{N},
-    \]
-    где $N$ — общее число вопросов, а $P(\text{“да”}\mid q_i,S)$ — вероятность наличия ответа на вопрос $q_i$ в тексте $S$, оцененная LLM.
-\\ \textbf{Совпадение ответов (AnswerSimilarity)} — среднее семантическое сходство между сгенерированными ответами $a_i^{\text{pred}}$ и эталонными $a_i^{\text{ref}}$ на те же ключевые вопросы:
-    \[
-      \text{AnswerSimilarity}
-      = \frac{1}{N}\sum_{i=1}^N \mathrm{sim}\bigl(a_i^{\text{pred}},\,a_i^{\text{ref}}\bigr),
-    \]
-    где $\mathrm{sim}$ — косинусное сходство эмбеддингов, полученных через USER‑bge‑m3.
+\textbf{ROUGE-L} \cite{rouge} — основана на длине наибольшей общей подпоследовательности (LCS) между сгенерированным рефератом $S$ и эталонным $R$.
+Вычисляется по формуле \eqref{rouge} с использованием формул \eqref{r_p} и \eqref{r_r}:
+\begin{equation}\label{r_p}
+  \text{Precision} = \frac{\mathrm{LCS}(S,R)}{|S|},\quad
+\end{equation}
+\begin{equation}\label{r_r}
+  \text{Recall} = \frac{\mathrm{LCS}(S,R)}{|R|}
+\end{equation}
+\begin{equation}\label{rouge}
+  \text{ROUGE‑L} = \frac{2\;\text{Precision}\;\cdot\;\text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation}
+
+\textbf{BERTScore} \cite{bertscore} — семантическое качество на уровне токенов. Для каждой пары токенов предсказания и эталона вычисляется косинусное сходство их эмбеддингов в модели USER‑bge‑m3. Затем:
+\begin{equation}\label{precision}
+P = \frac{1}{|S|}\sum_{t\in S}\max_{u\in R}\!\mathrm{sim}(e_t, e_u),\quad
+\end{equation}
+
+\begin{equation}\label{recall}
+R = \frac{1}{|R|}\sum_{u\in R}\max_{t\in S}\!\mathrm{sim}(e_u, e_t)\\
+\end{equation}
+
+\begin{equation}\label{f}
+\text{BERTScore} = \frac{2\,P\,R}{P+R}
+\end{equation}
+
+В формулах  \eqref{precision}, \eqref{recall} и \eqref{f} \(S\) - эталонный текст, \(R\) - сгенерированный; каждое предложение кодируется эмбеддингом модели USER‑bge‑m3, 
+после чего вычисляется косинусное сходство.  
+
+\textbf{Полнота покрытия ключевых вопросов (Coverage)} — доля заранее сгенерированных по эталонному тексту вопросов, на которые модель «отвечает» в реферате:
+\begin{equation}\label{coverage}
+  \text{Coverage} = \frac{\#\{q_i\colon P(\text{“да”}\mid q_i,S)\!>\!0.75\}}{N}
+\end{equation}
+В формуле \eqref{coverage} $N$ — общее число вопросов, а $P(\text{“да”}\mid q_i,S)$ — вероятность наличия ответа на вопрос $q_i$ в тексте $S$, оцененная LLM.
+
+\textbf{Совпадение ответов (AnswerSimilarity)} — среднее семантическое сходство между сгенерированными ответами $a_i^{\text{pred}}$ и эталонными $a_i^{\text{ref}}$ на те же ключевые вопросы:
+\begin{equation}\label{sims}
+  \text{AnswerSimilarity} = \frac{1}{N}\sum_{i=1}^N \mathrm{sim}\bigl(a_i^{\text{pred}},\,a_i^{\text{ref}}\bigr)
+\end{equation}
+В формуле \eqref{sims} $\mathrm{sim}$ — косинусное сходство эмбеддингов, полученных через USER‑bge‑m3.
 
 
 Использование нескольких метрик, учитывающих как поверхностное совпадение текста, так и глубокое семантическое сходство (BERTScore, AnswerSimilarity), 
@@ -370,10 +382,11 @@ Gazeta     & 60964 & 632.77 & 41.94 & 0.0699 \\
 то $S_j$ отбрасывается как избыточный. Такой выбор порога обеспечивает компромисс между сохранением значимой информации и устранением дублирования, 
 что эмпирически привело к заметному уменьшению объёма промежуточных представлений без существенной деградации качества.
 
-В \textbf{чертёжном методе с кластеризацией вопросов} количество кластеров для K-means выбирается по эвристике, подобранной эмпирически:
-\[
-n_{\text{clusters}} = \max\!\left(2,\; \left\lceil \sqrt{N_{\text{questions}}} \right\rceil\right),
-\]
+В \textbf{чертёжном методе с кластеризацией вопросов} количество кластеров для K-means выбирается по эвристике, подобранной эмпирически, представленной в формуле \eqref{num_cl}:
+\begin{equation}\label{num_cl}
+  n_{\text{clusters}} = \max\!\left(2,\; \left\lceil \sqrt{N_{\text{questions}}} \right\rceil\right)
+\end{equation}
+
 где $N_{\text{questions}}$ — общее число сгенерированных вопросов по всем чанкам до кластеризации. 
 Гарантируется минимум в два кластера, что позволяет даже при небольших наборах вопросов получать структурированное чертёжное представление.
 
@@ -384,7 +397,7 @@ n_{\text{clusters}} = \max\!\left(2,\; \left\lceil \sqrt{N_{\text{questions}}} \
 
 \section*{Результаты}
 \subsection*{Замеры времени.}
-Проводились первоначальные замеры скорости работы методов на небольших текстах, полученные результаты в секундах (среднее по трем запускам) представлены в таблице \ref{tab:timing}. 
+Проводились первоначальные замеры скорости работы методов на небольших текстах, полученные результаты в секундах (среднее по трём запускам) представлены в таблице \ref{tab:timing}. 
 Результаты подтверждают, что модификации позволяют повысить скорость генерации.
 \begin{table}[ht]
 \centering
@@ -406,7 +419,7 @@ yagpt5lite                   & 34.17 & 14.08 & 99.70 & 27.26 \\
 
 \subsection*{Полученные результаты.}
 В таблице \ref{tab:results_models} представлены сравнительные метрики качества автоматического пересказа книг разными моделями и методами обработки. Для каждой комбинации модели и метода измерялись BERTScore, ROUGEL, Answer Coverage и 
-Similarity, а также время генерации (среднее) на 100 примерах, одинаковых для всех замеров. Лучше всего себя показала модель Qwen3-\allowbreak 235B-\allowbreak A22B: она продемонстировала самые высокие показатели в покрытие вопросов и сходстве ответов.
+Similarity, а также время генерации (среднее) на 100 примерах, одинаковых для всех замеров. Лучше всего себя показала модель Qwen3-\allowbreak 235B-\allowbreak A22B: она продемонстрировала самые высокие показатели в покрытие вопросов и сходстве ответов.
 В то же время важно отметить, что среди всех методов лучшим образом в соотношение качество и время обработки себя показывает иерархический метод с фильтрацией узлов. Он позволяет существенно ускорить время обработки (например, почти в два раза для модели DeepSeek V3), и по сравнению с 
 чертежным методом, который в среднем показывал лучшие результаты, не сильно отстает по показателям. Исключением стала лишь модель Qwen3-\allowbreak 235B-\allowbreak A22B, так как она показала лучший результат среди всех моделей на базовом чертежном методе.
 Эксперименты показали, что иерархический метод с фильтрацией узлов обеспечивает наилучший компромисс между скоростью и качеством генерации.
@@ -604,7 +617,13 @@ Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / 
 System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
 //aclanthology.org/2023.eacl-demo.13/.
 
+\bibitem{rouge}
+\textit{ROUGE.}
+Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summarization branches out. – 2004. – С. 74-81.
 
+\bibitem{bertscore}
+\textit{BERTScore.}
+BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. – 2000.
 
 \end{thebibliography}
 
@@ -640,6 +659,14 @@ Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints.
 Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
 System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. — Dubrovnik, Croatia: Association for Computational Linguistics, 2023. — . — Pp. 105–116. https:
 //aclanthology.org/2023.eacl-demo.13/.
+
+\bibitem{rouge_e}
+\textit{ROUGE.}
+Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summarization branches out. – 2004. – С. 74-81.
+
+\bibitem{bertscore_e}
+\textit{BERTScore.}
+BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. – 2000.
 
 \end{thebibliography}
 
