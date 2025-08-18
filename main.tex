@@ -65,7 +65,13 @@
 \doi{10.31857/S2686954322040117}
 
 \begin{abstract}
-Работа исследует методы сжатия художественных текстов с помощью языковых моделей и предлагает улучшенные подходы для точного реферирования в условиях ограниченного контекста.
+Работа посвящена автоматическому реферированию художественной литературы на русском языке.
+Был собран открытый корпус RuBookSum (600+ пар «книга-пересказ») на основе текстов из LibRuSec и пользовательских пересказов <<Народного Брифли>>.
+Исследуются четыре подхода к реферированию: базовый иерархический и <<чертёжный>> (Text-Blueprint) с построением плана в виде вопросно-ответных пар, 
+а также новые, предложенные в этой работе методы: иерархический с фильтрацией узлов по косинусному сходству эмбеддингов и модификация <<чертежного>> 
+метода с кластеризацией вопросов алгоритмом KMeans.
+Наилучшее качество показывает Qwen3-235B-A22B в <<чертёжном>> методе, тогда как иерархический с фильтрацией обеспечивает лучший баланс между
+временем и качеством генерации.
 \end{abstract}
 
 \begin{keywords}
@@ -73,7 +79,14 @@ LLM, реферирование, литература, книги, кратки�
 \end{keywords}
 
 \begin{altabstract}
-This work explores methods for compressing literary texts using language models and proposes improved approaches for accurate summarization under limited context conditions.
+The work is dedicated to automatic summarization of Russian literary fiction.
+An open corpus RuBookSum (600+ “book-summary” pairs) was compiled based on texts from LibRuSec and user-generated summaries from <<Народный Брифли>>.
+Four approaches to summarization are examined: the baseline hierarchical method and the “blueprint” (Text-Blueprint) approach, 
+which builds an outline in the form of question-answer pairs, as well as two new methods proposed in this work: 
+a hierarchical method with node filtering based on cosine similarity of embeddings, 
+and a modification of the blueprint approach with question clustering using the KMeans algorithm.
+The best quality is achieved by Qwen3-235B-A22B in the blueprint method, 
+while the hierarchical method with filtering provides the best balance between generation time and quality.
 \end{altabstract}
 
 \begin{altkeywords}
@@ -98,7 +111,7 @@ Echoes from Alexandria \cite{alexandria} - многоязычный корпус
 Fables \cite{fables} - ручной корпус, предназначенный для оценки фактологической достоверности рефератов к художественным книгам. 
 Он включает 3 158 утверждений, извлечённых из созданных языковыми моделями рефератов к 26 книгам.
 Каждое утверждение оценивается по реферату, полученному от различных моделей и анализируются экспертами. 
-По результатам FABLES выявлено, что даже продвинутые модели (например, Claude) допускают до 20–30\% фактологических ошибок, включая искажение
+По результатам FABLES выявлено, что даже продвинутые модели (например, Claude) допускают до 20-30\% фактологических ошибок, включая искажение
 причинно-следственных связей, неверную характеристику персонажей и смещение
 акцента на малозначимые детали.
 рём критериям: соответствие событиям оригинала, логическая корректность и отсутствие искажений.
@@ -557,10 +570,10 @@ yagpt5lite                   & 34.17 & 14.08 & 99.70 & 27.26 \\
 
 \begin{thebibliography}{99}
 \bibitem{BookSum}
-BOOKSUM: A Collection of Datasets for Long-form Narrative Summarization / Wojciech Kryscinski, Nazneen Rajani, Divyansh Agarwal et al. // Findings of the Association for Computational Linguistics: EMNLP 2022 / Ed. by Yoav Goldberg, Zornitsa Kozareva, Yue Zhang. - Abu Dhabi, United Arab Emirates: Association for Computational Linguistics, 2022. - . - Pp. 6536–6558. https://aclanthology.org/2022.findings-emnlp.488/.
+BOOKSUM: A Collection of Datasets for Long-form Narrative Summarization / Wojciech Kryscinski, Nazneen Rajani, Divyansh Agarwal et al. // Findings of the Association for Computational Linguistics: EMNLP 2022 / Ed. by Yoav Goldberg, Zornitsa Kozareva, Yue Zhang. - Abu Dhabi, United Arab Emirates: Association for Computational Linguistics, 2022. - . - Pp. 6536-6558. https://aclanthology.org/2022.findings-emnlp.488/.
 
 \bibitem{alexandria}
-Echoes from Alexandria: A Large Resource for Multilingual Book Summarization / Alessandro Scir`e, Simone Conia, Simone Ciciliano, Roberto Navigli // Findings of the Association for Computational Linguistics: ACL 2023 / Ed. by Anna Rogers, Jordan Boyd-Graber, Naoaki Okazaki. - Toronto, Canada: Association for Computational Linguistics, 2023. - . - Pp. 853–867. https://aclanthology.org/2023.findings-acl.54/.
+Echoes from Alexandria: A Large Resource for Multilingual Book Summarization / Alessandro Scir`e, Simone Conia, Simone Ciciliano, Roberto Navigli // Findings of the Association for Computational Linguistics: ACL 2023 / Ed. by Anna Rogers, Jordan Boyd-Graber, Naoaki Okazaki. - Toronto, Canada: Association for Computational Linguistics, 2023. - . - Pp. 853-867. https://aclanthology.org/2023.findings-acl.54/.
 
 \bibitem{fables}
 FABLES: Evaluating faithfulness and content selection in book-length summarization \\/ Yekyung Kim, Yapei Chang, Marzena Karpinska et al. // First Conference on Language Modeling. - 2024. https://openreview.net/forum?id=YfHxQSoaWU.
@@ -575,32 +588,32 @@ FABLES: Evaluating faithfulness and content selection in book-length summarizati
 \url{https://librusec.org//} (дата обращения: 30.07.2025).
 
 \bibitem{hierarchical} 
-Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. – 2021. – С. arXiv: 2109.10862.
+Wu J. et al. Recursively Summarizing Books with Human Feedback //arXiv e-prints. - 2021. - С. arXiv: 2109.10862.
 
 \bibitem{blueprint} 
 Text-Blueprint: An Interactive Platform for Plan-based Conditional Generation / \\Fantine Huot, Joshua Maynez, Shashi Narayan et al. // Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics:
-System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. - Dubrovnik, Croatia: Association for Computational Linguistics, 2023. - . - Pp. 105–116. https:
+System Demonstrations / Ed. by Danilo Croce, Luca Soldaini. - Dubrovnik, Croatia: Association for Computational Linguistics, 2023. - . - Pp. 105-116. https:
 //aclanthology.org/2023.eacl-demo.13/.
 
 \bibitem{rouge}
 \textit{ROUGE.}
-Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summarization branches out. – 2004. – С. 74-81.
+Lin C. Y. Rouge: A package for automatic evaluation of summaries //Text summarization branches out. - 2004. - С. 74-81.
 
 \bibitem{bertscore}
 \textit{BERTScore.}
-BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. – 2000.
+BUCKLEY C. Evaluating Evaluation Measure Stability //ACM SIGIR 2000 Proceedings. - 2000.
 
 \bibitem{qwen3}
 \textit{Qwen3-235B.}
-Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. – 2025.
+Yang A. et al. Qwen3 technical report //arXiv preprint arXiv:2505.09388. - 2025.
 
 \bibitem{ruadapt}
 \textit{RuadaptQwen.}
-Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptation with learned embedding propagation //Journal of Language and Education. – 2024. – Т. 10. – №. 4 (40). – С. 130-145.
+Tikhomirov M., Chernyshev D. Facilitating large language model russian adaptation with learned embedding propagation //Journal of Language and Education. - 2024. - Т. 10. - №. 4 (40). - С. 130-145.
 
 \bibitem{deepseek}
 \textit{DeepSeek V3.}
-Liu A. et al. DeepSeek-V3 Technical Report //CoRR. – 2024.
+Liu A. et al. DeepSeek-V3 Technical Report //CoRR. - 2024.
 
 \bibitem{tpro}
 Т-Банк открыл доступ к собственной русскоязычной языковой модели в весовой категории 7-8 млрд параметров\\ Т-Банк URL: https://www.tbank.ru/about/news/20072024-t-bank-opened-access-its-own-russian-\\language-language-model-weight-category-of-7-8-billion-parameters/ (дата обращения: 10.05.2025).
