@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.7.29)  15 AUG 2025 16:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.7.29)  18 AUG 2025 12:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -744,17 +744,17 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 [1
 
 {C:/Users/dagri/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-<figures/genres_pie.png, id=41, 521.0667pt x 317.988pt>
+<figures/genres_pie.png, id=42, 521.0667pt x 317.988pt>
 File: figures/genres_pie.png Graphic file (type png)
 <use figures/genres_pie.png>
-Package pdftex.def Info: figures/genres_pie.png  used on input line 140.
+Package pdftex.def Info: figures/genres_pie.png  used on input line 142.
 (pdftex.def)             Requested size: 375.57779pt x 229.19862pt.
 
 
 Package babel Info: 'russian' activates 'russian' shorthands.
-(babel)             Reported on input line 164.
+(babel)             Reported on input line 161.
 [2 <./figures/genres_pie.png>]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 196.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 198.
 
 
 [3]
@@ -762,30 +762,29 @@ Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on inp
 [4]
 
 [5]
-LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 372.
+LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 374.
  (C:\Users\dagri\AppData\Local\Programs\MiKTeX\tex/latex/cyrillic\t2acmtt.fd
 File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 )
 
 [6]
-
-[7]
-<figures/two_ref.png, id=150, 901.86937pt x 935.74594pt>
+<figures/two_ref.png, id=142, 901.86937pt x 935.74594pt>
 File: figures/two_ref.png Graphic file (type png)
 <use figures/two_ref.png>
-Package pdftex.def Info: figures/two_ref.png  used on input line 508.
+Package pdftex.def Info: figures/two_ref.png  used on input line 490.
 (pdftex.def)             Requested size: 422.52054pt x 438.40138pt.
-
-
-[8 <./figures/two_ref.png>]
-<figures/three_ref.png, id=158, 1571.8725pt x 559.33969pt>
+<figures/three_ref.png, id=143, 1571.8725pt x 559.33969pt>
 File: figures/three_ref.png Graphic file (type png)
 <use figures/three_ref.png>
-Package pdftex.def Info: figures/three_ref.png  used on input line 521.
+Package pdftex.def Info: figures/three_ref.png  used on input line 497.
 (pdftex.def)             Requested size: 422.52054pt x 150.34947pt.
 
 
-[9 <./figures/three_ref.png>]
+[7]
+
+[8 <./figures/two_ref.png> <./figures/three_ref.png>]
+
+[9]
 
 [10] (main.aux)
  ***********
@@ -798,15 +797,15 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  14329 strings out of 468148
  220938 string characters out of 5431061
- 654899 words of memory out of 5000000
+ 675909 words of memory out of 5000000
  42629 multiletter control sequences out of 15000+600000
  652856 words of font info for 103 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,17n,79p,599b,606s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,17n,79p,599b,608s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lati0800.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1200.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\latt0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcbx0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\latt1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lasl1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm0600.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm0700.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lati0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcbx1000.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lacc0900.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1440.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm0800.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx0800.pk> <C:\Users\dagri\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\lasl0800.pk><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/dagri/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on main.pdf (10 pages, 1071547 bytes).
+Output written on main.pdf (10 pages, 1073349 bytes).
 PDF statistics:
- 1092 PDF objects out of 1200 (max. 8388607)
+ 1090 PDF objects out of 1200 (max. 8388607)
  59 named destinations out of 1000 (max. 500000)
  24 words of extra memory for PDF output out of 10000 (max. 10000000)
 
